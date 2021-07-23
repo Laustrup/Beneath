@@ -14,6 +14,7 @@ public class User {
 
     private Liszt<String> music, movies;
     private Liszt<Gender> gendersOfInterest;
+    private Liszt<ChatRoom> chatRooms;
 
     private Gender gender;
 
@@ -22,9 +23,26 @@ public class User {
     private BufferedImage profilePicture;
     private BufferedImage[] images;
 
-    // Still needs methods for these last two attributes
-    private Liszt<Gender> matches;
-    private Liszt<ChatRoom> chatRooms;
+    // Constructor for an user from db with all attributes
+    public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
+                Date dateOfBirth, String description, String education, String work,
+                BufferedImage profilePicture,BufferedImage[] images, Liszt<String> music,Liszt<String> movies,
+                Liszt<ChatRoom> chatRooms) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.gender = gender;
+        this.gendersOfInterest = gendersOfInterest;
+        this.dateOfBirth = dateOfBirth;
+        this.description = description;
+        this.education = education;
+        this.work = work;
+        this.profilePicture = profilePicture;
+        this.images = images;
+        this.music = music;
+        this.movies = movies;
+        this.chatRooms = chatRooms;
+    }
 
     public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
                 Date dateOfBirth, String description, String education, String work, BufferedImage profilePicture) {
@@ -41,8 +59,8 @@ public class User {
         this.images = new BufferedImage[5];
         this.music = new Liszt();
         this.movies = new Liszt();
-        this.matches = new Liszt();
-        this.chatRooms = new Liszt();    }
+        this.chatRooms = new Liszt();
+    }
 
     public User(String name, String password, String email, Gender gender, Liszt<Gender> gendersOfInterest,
                 Date dateOfBirth, String description, BufferedImage profilePicture) {
@@ -59,7 +77,6 @@ public class User {
         this.images = new BufferedImage[5];
         this.music = new Liszt();
         this.movies = new Liszt();
-        this.matches = new Liszt();
         this.chatRooms = new Liszt();
     }
 
@@ -204,5 +221,9 @@ public class User {
 
     public void setProfilePicture(BufferedImage profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public Liszt<ChatRoom> getChatRooms() {
+        return chatRooms;
     }
 }

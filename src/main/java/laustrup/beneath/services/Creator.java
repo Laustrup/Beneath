@@ -1,19 +1,53 @@
 package laustrup.beneath.services;
 
+import laustrup.beneath.models.ChatRoom;
 import laustrup.beneath.models.User;
 import laustrup.beneath.models.enums.Gender;
 import laustrup.beneath.repositories.specifics.UserRepository;
 import laustrup.beneath.utilities.Liszt;
 
 import java.awt.image.BufferedImage;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Creator {
 
-    // TODO
     public User getUser(String email) {
-        return null;
+
+        User user = null;
+
+        // Attributes of an user
+        String name = new String(),password = new String(),description = new String(),education = new String(),work = new String();
+
+        Gender gender = null;
+
+        Date dateOfBirth = null;
+
+        BufferedImage profilePicture = null;
+        BufferedImage[] images = null;
+
+        Liszt<String> music = null, movies = null;
+        Liszt<Gender> gendersOfInterest = null;
+        Liszt<ChatRoom> chatRooms = null;
+
+        ResultSet res = new UserRepository().getUserResultSet(email);
+
+        try {
+            while (res.next()) {
+
+                //TODO
+
+
+                user = new User(name,password,email,gender, gendersOfInterest,dateOfBirth,description,
+                        education,work,profilePicture,images,music,movies,chatRooms);
+            }
+        }
+        catch (java.lang.Exception e) {
+            new Print().writeErr("Couldn't create an model of user from DB...");
+        }
+
+        return user;
     }
 
     public User createUser(String name, String password, String email, Gender gender, boolean isIntoFemales,

@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 
 public class UserRepository extends Repository {
 
-    public ResultSet getUserResultSet(String name, String password) {
-        return getResultSet("SELECT * From user_table WHERE username = " + name + " AND userpassword = " + password);
+    public ResultSet getUserResultSet(String email) {
+        return getResultSet("SELECT * From user_table WHERE email = \"" + email + "\";");
     }
 
     public void putUserInDb(User user) {
