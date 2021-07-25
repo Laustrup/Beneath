@@ -27,92 +27,123 @@
 
         <main>
 
-            <section class="info_section">
-                <p th:text="${Exception}"></p>
-                <p th:text="${Message}"></p>
-            </section>
+            <div th:if="${Situation eq 'Start'}">
+                <section class="info_section">
+                    <p th:text="${Exception}"></p>
+                    <p th:text="${Message}"></p>
+                </section>
 
-            <section class="sign_up">
-                <form action="sign_up" method="post">
-                    <div>
-                        <label for="name">First name: *</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-
-                    <div>
-                        <label for="sign_up_password">Password: *</label>
-                        <input type="password" id="sign_up_password" name="password" required>
-                    </div>
-
-                    <div>
-                        <label for="sign_up_email">Email: *</label>
-                        <input type="email" id="sign_up_email" name="email" required>
-                    </div>
-
-                    <div class="gender_drop_box">
-                        <label for="gender">Gender: *</label>
-                        <select name="gender" id="gender" required>
-                            <option value="female">Female</option>
-                            <option value="male">Male</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <p>Interested in: </p>
+                <section class="sign_up">
+                    <form action="sign_up" method="post">
                         <div>
-                            <div>
-                                <label for="interested_in_females">Females</label>
-                                <input type="checkbox" id="interested_in_females" name="into_females">
-                            </div>
+                            <label for="name">First name: *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
 
-                            <div>
-                                <label for="interested_in_males">Males</label>
-                                <input type="checkbox" id="interested_in_males" name="into_males">
-                            </div>
+                        <div>
+                            <label for="sign_up_password">Password: *</label>
+                            <input type="password" id="sign_up_password" name="password" required>
+                        </div>
 
+                        <div>
+                            <label for="sign_up_email">Email: *</label>
+                            <input type="email" id="sign_up_email" name="email" required>
+                        </div>
+
+                        <div class="gender_drop_box">
+                            <label for="gender">Gender: *</label>
+                            <select name="gender" id="gender" required>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <p>Interested in: </p>
                             <div>
-                                <label for="interested_in_others">Others</label>
-                                <input type="checkbox" id="interested_in_others" name="into_others">
+                                <div>
+                                    <label for="interested_in_females">Females</label>
+                                    <input type="checkbox" id="interested_in_females" name="into_females">
+                                </div>
+
+                                <div>
+                                    <label for="interested_in_males">Males</label>
+                                    <input type="checkbox" id="interested_in_males" name="into_males">
+                                </div>
+
+                                <div>
+                                    <label for="interested_in_others">Others</label>
+                                    <input type="checkbox" id="interested_in_others" name="into_others">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <p>Born: *</p>
                         <div>
-                            <input type="date" id="date_of_birth" name="date_of_birth" required>
+                            <p>Born: *</p>
+                            <div>
+                                <input type="date" id="date_of_birth" name="date_of_birth" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <label for="description">Description: </label>
-                        <input type="text" id="description" name="description">
-                    </div>
+                        <div>
+                            <label for="description">Description: </label>
+                            <input type="text" id="description" name="description">
+                        </div>
 
-                    <div>
-                        <label for="work">Work: </label>
-                        <input type="text" id="work" name="work">
-                    </div>
+                        <div>
+                            <label for="work">Work: </label>
+                            <input type="text" id="work" name="work">
+                        </div>
 
-                    <div>
-                        <label for="education">Education: </label>
-                        <input type="text" id="education" name="education">
-                    </div>
+                        <div>
+                            <label for="education">Education: </label>
+                            <input type="text" id="education" name="education">
+                        </div>
 
-                    <div>
-                        <p>Choose an emoji:</p>
-                    </div>
+                        <div>
+                            <p>Choose an emoji:</p>
+                        </div>
 
-                    <p>All * are required</p>
+                        <p>All * are required</p>
 
-                    <button type="submit" class="button">Sign up</button>
-                </form>
-            </section>
+                        <button type="submit" class="button">Sign up</button>
+                    </form>
+                </section>
+            </div>
 
-            <section class="about">
+            <div th:if="${Situation eq 'About'}">
+                <section class="about">
 
-            </section>
+                    <section class="about_description">
+                        <p>This is about Beneath</p>
+                    </section>
+
+                    <a href="/" class="button">Sign up</a>
+                </section>
+            </div>
+
+            <div th:if="${Situation eq 'Faq'}">
+                <section class="about">
+
+                    <section class="Faq_description">
+                        <p>This is about Faq</p>
+                    </section>
+
+                    <a href="/" class="button">Sign up</a>
+                </section>
+            </div>
+
+            <div th:if="${Situation eq 'Policies'}">
+                <section class="about">
+
+                    <section class="Policies_description">
+                        <p>This is about privacy policies</p>
+                    </section>
+
+                    <a href="/" class="button">Sign up</a>
+                </section>
+            </div>
         </main>
 
         <footer th:replace="fragments/footer.html"></footer>

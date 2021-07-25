@@ -46,8 +46,11 @@ public class StartController {
     @GetMapping("/")
     public String indexPage(HttpServletRequest request, Model initializingModel){
 
-        happening = new Happenquin().startHappening(request);
-        mannequin = new Happenquin().sculptureMannequin(initializingModel);
+        if (!happening.isHappeningActive()) {
+            happening.activateSession(request);
+        }
+
+        mannequin.activateModel(initializingModel);
 
         if (hasLoggedOut) {
             happening.setAttribute("Message","You are now logged out!");
@@ -58,8 +61,10 @@ public class StartController {
         Object[] modelValues = {happening.getAttribute("Exception"), happening.getAttribute("Message")};
 
         mannequin.addAttributes(modelKeys,modelValues);
+        mannequin.setAttribute("Situation","Start");
+        Model model = mannequin.getModel();
 
-        return "index";
+        return "index.html";
     }
 
     @PostMapping("/log_in")

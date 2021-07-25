@@ -5,10 +5,12 @@ import javax.servlet.http.HttpSession;
 
 public class Happening {
 
-    HttpSession session;
+    private HttpSession session;
+    private boolean isActive = false;
 
     public HttpSession activateSession(HttpServletRequest request) {
         this.session = request.getSession();
+        isActive = true;
         return session;
     }
 
@@ -39,7 +41,12 @@ public class Happening {
         return true;
     }
 
+    public boolean isHappeningActive() {
+        return isActive;
+    }
+
     public void invalidateCurrentSession() {
+        isActive = false;
         session.invalidate();
     }
 

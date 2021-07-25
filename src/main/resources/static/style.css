@@ -19,7 +19,7 @@ select {
 }
 
 body {
-    background-image: url("images/sky_background.jpg");
+    background-image: url("images/background.jpeg");
 
     /* Center and scale the image nicely */
     background-position: center;
@@ -32,19 +32,19 @@ body {
 }
 
 header {
-    background-color: rgba(255, 255, 0, 0.5);
+    background-color: orange;
     border: solid;
-    border-color: rgba(0, 0, 255, 0.5);
+    border-color: beige;
     border-width: thick;
 
 }
 
 main {
-    background-color: rgba(255, 255, 0, 0.5);
+    background-color: orange;
     border: solid;
     border-radius: 10% / 50%;
     border-width: thick;
-    border-color: rgba(0, 0, 255, 0.5);
+    border-color: beige;
     margin: 50px 400px 20px;
     margin-bottom: 500px;
 }
@@ -52,9 +52,9 @@ main {
 footer {
     width: 100%;
 
-    background-color: rgba(255, 255, 0, 0.5);
+    background-color: orange;
     border: solid;
-    border-color: rgba(0, 0, 255, 0.5);
+    border-color: beige;
     border-width: thick;
 
     position: absolute;
@@ -78,9 +78,9 @@ footer {
 }
 
 .button {
-    background-color: #4CAF50; /* Green */
+    background-color: darkgreen;
     border: none;
-    color: white;
+    color: beige;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
