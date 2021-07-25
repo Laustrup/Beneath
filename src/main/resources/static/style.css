@@ -8,6 +8,16 @@ ul{
     list-style: none;
 }
 
+label {
+    width: 240px;
+    display: inline-block;
+    text-align: left;
+}
+
+select {
+    width: 150px;
+}
+
 body {
     background-image: url("images/sky_background.jpg");
 
@@ -16,7 +26,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
-
+    
     /* general text font */
     font: italic small-caps bold 16px/2 cursive;
 }
@@ -35,7 +45,7 @@ main {
     border-radius: 10% / 50%;
     border-width: thick;
     border-color: rgba(0, 0, 255, 0.5);
-    margin: 50px 600px 20px;
+    margin: 50px 400px 20px;
     margin-bottom: 500px;
 }
 

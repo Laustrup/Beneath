@@ -32,6 +32,13 @@ public class Happening {
         return session.getAttribute(key);
     }
 
+    public boolean contains(String key) {
+        if (session.getAttribute(key)==null) {
+            return false;
+        }
+        return true;
+    }
+
     public void invalidateCurrentSession() {
         session.invalidate();
     }

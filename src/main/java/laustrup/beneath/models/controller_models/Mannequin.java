@@ -22,4 +22,8 @@ public class Mannequin {
         return model;
     }
 
+    public boolean contains(String key) {
+        return model.containsAttribute(key);
+    }
+
 }
