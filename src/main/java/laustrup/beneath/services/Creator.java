@@ -18,11 +18,10 @@ public class Creator {
         User user = null;
 
         // Attributes of an user
-        String name = new String(),password = new String(),description = new String(),education = new String(),work = new String();
+        String name = new String(),password = new String(), dateOfBirth = new String(),
+                description = new String(), education = new String(),work = new String();
 
         Gender gender = null;
-
-        Date dateOfBirth = null;
 
         BufferedImage profilePicture = null;
         BufferedImage[] images = null;
@@ -51,7 +50,7 @@ public class Creator {
     }
 
     public User createUser(String name, String password, String email, Gender gender, boolean isIntoFemales,
-                           boolean isIntoMales, boolean isIntoOthers, Date dateOfBirth, String description,
+                           boolean isIntoMales, boolean isIntoOthers, String dateOfBirth, String description,
                            String education, String work, BufferedImage profilePicture) {
 
         Liszt<Gender> gendersOfInterest = new Liszt<>();

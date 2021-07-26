@@ -21,10 +21,10 @@ class CreatorTest {
     private Creator creator = new Creator();
 
     @ParameterizedTest
-    @CsvSource(value = {"Lars|qscqscqsc|lars.bonnesen@gmail.com|male|true|false|false|1968-04-31|...|" +
-                        "C:\\Users\\Laust\\IdeaProjects\\beneath\\src\\main\\resources\\static\\images\\profile_pictures\\Profile_picture_1.png"},delimiter = '|')
+    @CsvSource(value = {"Lars|qscqscqsc|lars.bonnesen@gmail.com|male|true|false|false|1968-04-31|...|Highschool|IT|" +
+                        "C:/Users/Laust/IdeaProjects/beneath/src/main/resources/static/images/profile_pictures/Man1.jpg"},delimiter = '|')
     public void createUserTest(String name, String password, String email, Gender gender, boolean isIntoFemales,
-                               boolean isIntoMales, boolean isIntoOthers, Date dateOfBirth, String description,
+                               boolean isIntoMales, boolean isIntoOthers, String dateOfBirth, String description,
                                String education, String work, String imgSource) {
 
         // Arrange
@@ -50,8 +50,9 @@ class CreatorTest {
         }
 
         // Act
-        User expected = creator.createUser(name,password,email,gender,isIntoFemales,isIntoMales,isIntoOthers,dateOfBirth,description,
-                education,work,img);
+        User expected = creator.createUser(name,password,email,gender,
+                        isIntoFemales,isIntoMales,isIntoOthers,dateOfBirth,
+                        description, education,work,img);
         User actual = creator.getUser(email);
 
         // Assert

@@ -4,8 +4,6 @@ import laustrup.beneath.models.controller_models.Mannequin;
 import laustrup.beneath.models.controller_models.Happening;
 import laustrup.beneath.models.User;
 import laustrup.beneath.repositories.cache.Wallet;
-import laustrup.beneath.services.Database;
-import laustrup.beneath.services.Happenquin;
 import laustrup.beneath.services.Exception;
 import laustrup.beneath.services.Creator;
 import org.springframework.stereotype.Controller;
@@ -25,23 +23,8 @@ public class StartController {
 
     private Mannequin mannequin = new Mannequin();
     private Happening happening = new Happening();
-    private Database db = new Database();
 
     private boolean hasLoggedOut = false;
-
-    public Wallet getWallet() {
-        return wallet;
-    }
-
-    public Mannequin getMannequin() {
-        return mannequin;
-    }
-
-    public Happening getHappening() {
-        return happening;
-    }
-
-    public Database getDatabase() {return db;}
 
     @GetMapping("/")
     public String indexPage(HttpServletRequest request, Model initializingModel){
@@ -80,8 +63,6 @@ public class StartController {
             Object[] sessionValues = {wallet,user,"",""};
             happening.addAttributes(sessionKeys,sessionValues);
 
-            db.openConnection();
-
             return "redirect:/dashboard-" + user.getName();
         }
 
@@ -93,8 +74,6 @@ public class StartController {
     public String logOut(){
 
         happening.invalidateCurrentSession();
-
-        db.closeConnection();
 
         hasLoggedOut = true;
 

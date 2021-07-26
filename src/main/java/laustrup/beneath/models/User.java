@@ -1,6 +1,7 @@
 package laustrup.beneath.models;
 
 import laustrup.beneath.models.enums.Gender;
+import laustrup.beneath.services.Print;
 import laustrup.beneath.utilities.Liszt;
 
 import java.awt.image.BufferedImage;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 public class User {
 
-    private String name,password,email,description,education,work;
+    private String name,password,email,dateOfBirth,description,education,work;
 
     private Liszt<String> music, movies;
     private Liszt<Gender> gendersOfInterest;
@@ -18,14 +19,12 @@ public class User {
 
     private Gender gender;
 
-    private Date dateOfBirth;
-
     private BufferedImage profilePicture;
     private BufferedImage[] images;
 
     // Constructor for an user from db with all attributes
     public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
-                Date dateOfBirth, String description, String education, String work,
+                String dateOfBirth, String description, String education, String work,
                 BufferedImage profilePicture,BufferedImage[] images, Liszt<String> music,Liszt<String> movies,
                 Liszt<ChatRoom> chatRooms) {
         this.name = name;
@@ -45,7 +44,7 @@ public class User {
     }
 
     public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
-                Date dateOfBirth, String description, String education, String work, BufferedImage profilePicture) {
+                String dateOfBirth, String description, String education, String work, BufferedImage profilePicture) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -63,7 +62,7 @@ public class User {
     }
 
     public User(String name, String password, String email, Gender gender, Liszt<Gender> gendersOfInterest,
-                Date dateOfBirth, String description, BufferedImage profilePicture) {
+                String dateOfBirth, String description, BufferedImage profilePicture) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -81,14 +80,20 @@ public class User {
     }
 
     public int getAge() {
+
+        String[] dateSplit = dateOfBirth.split("-");
+        int year = Integer.parseInt(dateSplit[0]);
+        int month = Integer.parseInt(dateSplit[2]);
+        int day = Integer.parseInt(dateSplit[1]);
+
         LocalDate now = LocalDate.now();
 
-        int amountOfYears = now.getYear() - dateOfBirth.getYear();
-        int amountOfMonths = now.getMonthValue() - dateOfBirth.getMonth();
-        int amountOfDays = now.getDayOfMonth() - dateOfBirth.getDay();
+        int amountOfYears = now.getYear() - year;
+        int amountOfMonths = now.getMonthValue() - month;
+        int amountOfDays = now.getDayOfMonth() - day;
 
         if (amountOfMonths > 0 && amountOfDays > 0) {
-        return amountOfYears;
+            return amountOfYears;
         }
         return -1;
     }
@@ -199,11 +204,11 @@ public class User {
         this.work = work;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

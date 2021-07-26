@@ -1,6 +1,6 @@
 package laustrup.beneath.repositories;
 
-import laustrup.beneath.services.Database;
+import laustrup.beneath.services.Print;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,13 +8,15 @@ import java.sql.ResultSet;
 
 public abstract class Repository {
 
-    private Database database;
+    private DatabaseConnection database = new DatabaseConnection();
     private Connection connection;
 
     // Executes PreparedStatement and returns the ResultSet, needs a close connection.
     protected ResultSet getResultSet(String sql) {
 
-        connection = database.getConnection();
+        if (database.openConnection()) {
+            connection = database.getConnection();
+        }
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             return statement.executeQuery();
@@ -28,7 +30,10 @@ public abstract class Repository {
 
     // Executes an sql-statement that will update an table in db
     protected void updateTable(String sql) {
-        connection = database.getConnection();
+
+        if (database.openConnection()) {
+            connection = database.getConnection();
+        }
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.executeUpdate();
@@ -37,6 +42,7 @@ public abstract class Repository {
             System.out.println("Couldn't execute update...\n" + e.getMessage());
             e.printStackTrace();
         }
+        database.closeConnection();
     }
 
     public int findId(String table, String where, String value, String ColumnOfId) {
@@ -45,11 +51,13 @@ public abstract class Repository {
 
         try {
             res.next();
+            closeConnection();
             return res.getInt(ColumnOfId);
         }
         catch (Exception e) {
             System.out.println("Couldn't find id...\n" + e.getMessage());
             e.printStackTrace();
+            closeConnection();
             return -1;
         }
     }
@@ -67,9 +75,19 @@ public abstract class Repository {
         }
         catch (Exception e) {
             System.out.println("Something went wrong with calculating next id...\n" + e.getMessage());
+            closeConnection();
+            return -1;
         }
         return nextId + 1;
     }
 
+    public void closeConnection() {
+        try {
+            connection.close();
+        }
+        catch (Exception e) {
+            new Print().writeErr("Couldn't close connection...");
+        }
+    }
 
 }
