@@ -21,9 +21,24 @@
                     <label for="log_in_password">Password: </label>
                     <input type="password" id="log_in_password" name="password" placeholder="*****" required>
 
-                    <button type="submit" class="button">Log in</button>
+                    <button onmouseover="changeColour(this)" onmouseout="changeColour(this)"
+                            type="submit" class="button">Log in</button>
                 </form>
             </section>
+
+            <script type="text/javascript">
+                function changeColour(object) {
+                    if (object.style.backgroundColor == 'darkgreen') {
+                        object.style.backgroundColor = 'orange';
+                        object.style.color = 'darkgreen';
+                    }
+                    else {
+                        object.style.backgroundColor = 'darkgreen';
+                        object.style.color = 'beige';
+                    }
+                }
+            </script>
+
         </header>
 
         <main>
@@ -113,7 +128,8 @@
 
                         <p>All * are required</p>
 
-                        <button type="submit" class="button">Sign up</button>
+                        <button onmouseover="changeColour(this)" onmouseout="changeColour(this)"
+                                type="submit" class="button">Sign up</button>
                     </form>
                 </section>
             </div>
@@ -150,6 +166,7 @@
                     <a href="/" class="button">Sign up</a>
                 </section>
             </div>
+
         </main>
 
         <footer th:replace="fragments/footer.html"></footer>
