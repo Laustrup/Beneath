@@ -1,3 +1,7 @@
+html {
+
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -19,27 +23,28 @@ select {
 }
 
 body {
-    background-image: url("images/background.jpeg");
+    background-image: url("images/background.jpg");
 
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
-    
+
     /* general text font */
-    font: italic small-caps bold 16px/2 cursive;
+    font-family: 'Libre Baskerville', serif;
+
 }
 
 header {
-    background-color: orange;
-    border: solid;
-    border-color: beige;
-    border-width: thick;
-
+    background-image: url("images/header/background.jpg");
 }
 
-main {
+.header_title {
+    font-family: 'Fuggles', cursive;
+}
+
+.sign_up {
     background-color: orange;
     border: solid;
     border-radius: 10% / 50%;
@@ -52,10 +57,10 @@ main {
 footer {
     width: 100%;
 
-    background-color: orange;
-    border: solid;
+    background-color: orangered;
+
+    border-top: 10px;
     border-color: beige;
-    border-width: thick;
 
     position: absolute;
     padding: 70px 0;
