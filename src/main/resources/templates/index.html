@@ -1,18 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-    <head th:replace="fragments/head.html">
-        <link href="../static/style.css" th:href="@{/style.css}" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fuggles&display=swap" rel="stylesheet">
-    </head>
+    <head th:replace="fragments/head.html(current_page='Beneath')"></head>
 
     <body>
 
@@ -113,12 +102,15 @@
                         </div>
 
                         <div>
-                            <p>Choose a picture *</p>
-
-                            <img src="../static/images/profile_pictures/Man1.jpg" alt="Man" />
-
-                            <img src="../static/images/profile_pictures/Woman1.jpg" alt="Woman" />
-
+                            <label for="image">Choose a picture *</label>
+                            <select id="image" name="profile_picture" required>
+                                <option value="../../../resources/static/images/profile_pictures/Man1.jpg">
+                                    <img src="../static/images/profile_pictures/Man1.jpg" alt="Man" />
+                                </option>
+                                <option value="../../../resources/static/images/profile_pictures/Woman1.jpg">
+                                    <img src="../static/images/profile_pictures/Woman1.jpg" alt="Woman" />
+                                </option>
+                            </select>
                         </div>
 
                         <p>All * are required</p>

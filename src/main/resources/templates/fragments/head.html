@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-    <head>
 
-        <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" />
+    <head>
+        <meta charset="UTF-8">
+
+        <link href="../../static/styles/global_style.css" th:href="@{/styles/global_style.css}" rel="stylesheet" />
+
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-        <link rel="shortcut icon" type="image/jpeg" href="../../static/images/header/header_icon.jpeg" th:href="@{/header_icon.jpeg}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
 
-        <meta charset="UTF-8">
-        <title>Beneath</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fuggles&display=swap" rel="stylesheet">
+
+        <link rel="shortcut icon" type="image/jpeg" href="../static/images/header/header_icon.jpeg" th:href="@{/header_icon.jpeg}">
+
+        <title th:text="${current_page}"></title>
 
     </head>
 </html>

@@ -6,12 +6,15 @@ import laustrup.beneath.models.controller_models.Mannequin;
 import laustrup.beneath.models.enums.Gender;
 import laustrup.beneath.repositories.cache.Wallet;
 import laustrup.beneath.services.Creator;
+import laustrup.beneath.services.Print;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Date;
 
 @Controller
@@ -32,10 +35,20 @@ public class CreateController {
                                 @RequestParam(name = "description") String description,
                                 @RequestParam(name = "education") String education,
                                 @RequestParam(name = "work") String work,
-                                @RequestParam(name = "profile_picture") BufferedImage profilePicture,
+                                @RequestParam(name = "profile_picture") String pictureUrl,
                                 HttpServletRequest request) {
 
+        BufferedImage profilePicture = null;
+
         happening.activateSession(request);
+
+        try {
+            File file = new File(pictureUrl);
+            profilePicture = ImageIO.read(file);
+        }
+        catch (Exception e) {
+            new Print().writeErr("Couldn't read file to BufferedImage...");
+        }
 
         User user = new Creator().createUser(name,password,email,gender,isIntoFemales,isIntoMales,isIntoOthers,
                                                 dateOfBirth,description,education,work,profilePicture);

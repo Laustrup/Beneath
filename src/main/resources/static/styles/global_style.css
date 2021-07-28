@@ -1,5 +1,5 @@
 html {
-
+    height: 100%;
 }
 
 *{
@@ -22,8 +22,29 @@ select {
     width: 150px;
 }
 
+.button {
+    background-color: orange;
+    border: none;
+    color: darkgreen;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.emoji {
+    width: 45pt;
+    height: 45pt;
+}
+
+main {
+    overflow: auto;
+    padding-bottom: 100px;
+}
+
 body {
-    background-image: url("images/background.jpg");
+    background-image: url("../images/background.jpg");
 
     /* Center and scale the image nicely */
     background-position: center;
@@ -34,10 +55,15 @@ body {
     /* general text font */
     font-family: 'Libre Baskerville', serif;
 
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
 }
 
 header {
-    background-image: url("images/header/background.jpg");
+    background-image: url("../images/header/background.jpg");
 }
 
 .header_title {
@@ -55,22 +81,32 @@ header {
 }
 
 footer {
+    height: 100px;
     width: 100%;
 
-    background-color: orangered;
+    background-color: #000;
+
+    position: relative;
+    margin-top: -100px;
+    clear: both;
 
     border-top: 10px;
     border-color: beige;
 
-    position: absolute;
-    padding: 70px 0;
+}
+
+.footer_headline {
+    color: orangered;
 }
 
 .footer_container {
     max-width: 1170px;
     margin: auto;
 
+    justify-content: center;
+
     display:flex;
+    flex-direction: column;
     flex-wrap: wrap;
 
     width:25%;
@@ -78,22 +114,7 @@ footer {
 }
 
 .link_title {
+    color: darkorange;
     font-size: 18px;
     text-transform: capitalize;
-}
-
-.button {
-    background-color: orange;
-    border: none;
-    color: darkgreen;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-
-.emoji {
-    width: 45pt;
-    height: 45pt;
 }
