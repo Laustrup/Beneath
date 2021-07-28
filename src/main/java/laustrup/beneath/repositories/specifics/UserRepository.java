@@ -16,13 +16,13 @@ public class UserRepository extends Repository {
         user.setRepoId(calcNextId("user_table"));
 
         if (user.getEducation() != null && user.getWork() != null) {
-            updateTable("INSERT INTO user(username,password,email,user_description,education,work,gender,date_of_birth,cover_url) " +
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,gender,date_of_birth,cover_url) " +
                     "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
                     "\", \"" + user.getEducation() + "\", \"" + user.getWork() + "\", \"" + user.getGender() + "\", \"" + user.getDateOfBirth() +
                     "\", \"" + user.getCoverUrl() + "\");",false);
         }
         else {
-            updateTable("INSERT INTO user(username,password,email,user_description,education,work,gender,date_of_birth,cover_url) " +
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,gender,date_of_birth,cover_url) " +
                     "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
                     "\", null, null, \"" + user.getGender() + "\", \"" + user.getDateOfBirth() +
                     "\", \"" + user.getCoverUrl() + "\");",false);

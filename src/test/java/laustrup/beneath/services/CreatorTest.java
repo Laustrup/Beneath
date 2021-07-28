@@ -52,7 +52,9 @@ class CreatorTest {
         }
 
         // Delete
+        creator.deleteUser(expected);
 
+        assertEquals(null,creator.getUser(email));
 
     }
 
