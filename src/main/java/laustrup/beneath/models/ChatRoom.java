@@ -10,6 +10,8 @@ public class ChatRoom {
     private Liszt<Message> inbox;
     private Liszt<User> users;
 
+    private int repoId = -1;
+
     public ChatRoom(User firstParticipant, User secondParticipant) {
         Object[] participants = {firstParticipant, secondParticipant};
         users = new Liszt(true,participants);
@@ -62,5 +64,17 @@ public class ChatRoom {
             }
         }
         return null;
+    }
+
+    public void setRepoId(int repoId) {
+        this.repoId = repoId;
+    }
+
+    public int getRepoId() {
+        return repoId;
+    }
+
+    public int getAmountOfMessages() {
+        return inbox.length();
     }
 }

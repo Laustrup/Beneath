@@ -4,8 +4,11 @@
     <head>
         <meta charset="UTF-8">
 
+        <!-- stylesheets -->
         <link href="../../static/styles/global_style.css" th:href="@{/styles/global_style.css}" rel="stylesheet" />
+        <link href="../../static/styles/footer.css" th:href="@{/styles/footer.css}" rel="stylesheet" />
 
+        <!-- text fonts -->
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,9 +19,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fuggles&display=swap" rel="stylesheet">
 
+        <!-- head style -->
         <link rel="shortcut icon" type="image/jpeg" href="../static/images/header/header_icon.jpeg" th:href="@{/header_icon.jpeg}">
-
-        <title th:text="${current_page}"></title>
+        <title th:text="${head_title}"></title>
 
     </head>
 </html>

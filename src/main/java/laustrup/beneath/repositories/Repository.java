@@ -29,7 +29,7 @@ public abstract class Repository {
     }
 
     // Executes an sql-statement that will update an table in db
-    protected void updateTable(String sql) {
+    protected void updateTable(String sql, boolean closeConnection) {
 
         if (database.openConnection()) {
             connection = database.getConnection();
@@ -42,7 +42,9 @@ public abstract class Repository {
             System.out.println("Couldn't execute update...\n" + e.getMessage());
             e.printStackTrace();
         }
-        database.closeConnection();
+        if (closeConnection) {
+            database.closeConnection();
+        }
     }
 
     public int findId(String table, String where, String value, String ColumnOfId) {

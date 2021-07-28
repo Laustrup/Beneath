@@ -13,24 +13,26 @@ import java.util.Date;
 
 public class Creator {
 
+    private UserRepository repo = new UserRepository();
+
     public User getUser(String email) {
 
         User user = null;
 
         // Attributes of an user
         String name = new String(),password = new String(), dateOfBirth = new String(),
-                description = new String(), education = new String(),work = new String();
+                description = new String(), education = new String(),work = new String(),
+                coverUrl = new String();
 
         Gender gender = null;
 
-        BufferedImage profilePicture = null;
         BufferedImage[] images = null;
 
         Liszt<String> music = null, movies = null;
         Liszt<Gender> gendersOfInterest = null;
         Liszt<ChatRoom> chatRooms = null;
 
-        ResultSet res = new UserRepository().getUserResultSet(email);
+        ResultSet res = repo.getUserResultSet(email);
 
         try {
             while (res.next()) {
@@ -39,19 +41,21 @@ public class Creator {
 
 
                 user = new User(name,password,email,gender, gendersOfInterest,dateOfBirth,description,
-                        education,work,profilePicture,images,music,movies,chatRooms);
+                        education,work,coverUrl,images,music,movies,chatRooms);
             }
         }
         catch (java.lang.Exception e) {
             new Print().writeErr("Couldn't create an model of user from DB...");
         }
 
+        repo.closeConnection();
+
         return user;
     }
 
     public User createUser(String name, String password, String email, Gender gender, boolean isIntoFemales,
                            boolean isIntoMales, boolean isIntoOthers, String dateOfBirth, String description,
-                           String education, String work, BufferedImage profilePicture) {
+                           String education, String work, String coverUrl) {
 
         Liszt<Gender> gendersOfInterest = new Liszt<>();
 
@@ -66,11 +70,15 @@ public class Creator {
         }
 
         User user = new User(name,password,email,gender,gendersOfInterest,
-                            dateOfBirth,description,education,work,profilePicture);
+                            dateOfBirth,description,education,work,coverUrl);
 
         new UserRepository().putUserInDb(user);
 
         return user;
+    }
+
+    public void deleteUser(User user) {
+        repo.deleteUser(user);
     }
 
 }

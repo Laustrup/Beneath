@@ -4,14 +4,16 @@ import laustrup.beneath.models.enums.Gender;
 import laustrup.beneath.services.Print;
 import laustrup.beneath.utilities.Liszt;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class User {
 
     private String name,password,email,dateOfBirth,description,education,work;
+
+    private int repoId = -1;
 
     private Liszt<String> music, movies;
     private Liszt<Gender> gendersOfInterest;
@@ -19,13 +21,13 @@ public class User {
 
     private Gender gender;
 
-    private BufferedImage profilePicture;
+    private String coverUrl;
     private BufferedImage[] images;
 
     // Constructor for an user from db with all attributes
     public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
                 String dateOfBirth, String description, String education, String work,
-                BufferedImage profilePicture,BufferedImage[] images, Liszt<String> music,Liszt<String> movies,
+                String coverUrl,BufferedImage[] images, Liszt<String> music,Liszt<String> movies,
                 Liszt<ChatRoom> chatRooms) {
         this.name = name;
         this.password = password;
@@ -36,7 +38,7 @@ public class User {
         this.description = description;
         this.education = education;
         this.work = work;
-        this.profilePicture = profilePicture;
+        this.coverUrl = coverUrl;
         this.images = images;
         this.music = music;
         this.movies = movies;
@@ -44,7 +46,7 @@ public class User {
     }
 
     public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
-                String dateOfBirth, String description, String education, String work, BufferedImage profilePicture) {
+                String dateOfBirth, String description, String education, String work, String coverUrl) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -54,7 +56,7 @@ public class User {
         this.description = description;
         this.education = education;
         this.work = work;
-        this.profilePicture = profilePicture;
+        this.coverUrl = coverUrl;
         this.images = new BufferedImage[5];
         this.music = new Liszt();
         this.movies = new Liszt();
@@ -62,7 +64,7 @@ public class User {
     }
 
     public User(String name, String password, String email, Gender gender, Liszt<Gender> gendersOfInterest,
-                String dateOfBirth, String description, BufferedImage profilePicture) {
+                String dateOfBirth, String description, String coverUrl) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -70,7 +72,7 @@ public class User {
         this.gendersOfInterest = gendersOfInterest;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
-        this.profilePicture = profilePicture;
+        this.coverUrl = coverUrl;
         this.education = new String();
         this.work = new String();
         this.images = new BufferedImage[5];
@@ -220,15 +222,33 @@ public class User {
         this.email = email;
     }
 
-    public BufferedImage getProfilePicture() {
-        return profilePicture;
+    public BufferedImage getCover() {
+        try {
+            return ImageIO.read(new File(coverUrl));
+        }
+        catch (Exception e) {
+            new Print().writeErr("Couldn't read cover's url in user's model...");
+            return null;
+        }
     }
 
-    public void setProfilePicture(BufferedImage profilePicture) {
-        this.profilePicture = profilePicture;
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCover(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public Liszt<ChatRoom> getChatRooms() {
         return chatRooms;
+    }
+
+    public void setRepoId(int repoId) {
+        this.repoId = repoId;
+    }
+
+    public int getRepoId() {
+        return repoId;
     }
 }

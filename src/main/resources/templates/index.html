@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-    <head th:replace="fragments/head.html(current_page='Beneath')"></head>
+    <head th:replace="fragments/head.html(head_title='Beneath')"></head>
 
     <body>
 
@@ -28,12 +28,16 @@
         <main>
 
             <div th:if="${Situation eq 'Start'}">
+
+
                 <section class="info_section">
                     <p th:text="${Exception}"></p>
                     <p th:text="${Message}"></p>
                 </section>
 
                 <section class="sign_up">
+                    <h4>Create an account:</h4>
+
                     <form action="sign_up" method="post">
                         <div>
                             <label for="name">First name: *</label>
@@ -102,8 +106,8 @@
                         </div>
 
                         <div>
-                            <label for="image">Choose a picture *</label>
-                            <select id="image" name="profile_picture" required>
+                            <label for="image">Choose a cover *</label>
+                            <select id="image" name="cover_url" required>
                                 <option value="../../../resources/static/images/profile_pictures/Man1.jpg">
                                     <img src="../static/images/profile_pictures/Man1.jpg" alt="Man" />
                                 </option>

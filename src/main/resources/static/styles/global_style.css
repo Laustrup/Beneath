@@ -1,5 +1,5 @@
 html {
-    height: 100%;
+    height: 100vh;
 }
 
 *{
@@ -55,7 +55,7 @@ body {
     /* general text font */
     font-family: 'Libre Baskerville', serif;
 
-    min-height: 100vh;
+    height: 100%;
 
     display: flex;
     flex-direction: column;
@@ -78,43 +78,4 @@ header {
     border-color: beige;
     margin: 50px 400px 20px;
     margin-bottom: 500px;
-}
-
-footer {
-    height: 100px;
-    width: 100%;
-
-    background-color: #000;
-
-    position: relative;
-    margin-top: -100px;
-    clear: both;
-
-    border-top: 10px;
-    border-color: beige;
-
-}
-
-.footer_headline {
-    color: orangered;
-}
-
-.footer_container {
-    max-width: 1170px;
-    margin: auto;
-
-    justify-content: center;
-
-    display:flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-
-    width:25%;
-    padding: 0 15px;
-}
-
-.link_title {
-    color: darkorange;
-    font-size: 18px;
-    text-transform: capitalize;
 }

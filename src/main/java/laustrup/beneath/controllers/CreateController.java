@@ -35,23 +35,13 @@ public class CreateController {
                                 @RequestParam(name = "description") String description,
                                 @RequestParam(name = "education") String education,
                                 @RequestParam(name = "work") String work,
-                                @RequestParam(name = "profile_picture") String pictureUrl,
+                                @RequestParam(name = "cover_url") String coverUrl,
                                 HttpServletRequest request) {
-
-        BufferedImage profilePicture = null;
 
         happening.activateSession(request);
 
-        try {
-            File file = new File(pictureUrl);
-            profilePicture = ImageIO.read(file);
-        }
-        catch (Exception e) {
-            new Print().writeErr("Couldn't read file to BufferedImage...");
-        }
-
         User user = new Creator().createUser(name,password,email,gender,isIntoFemales,isIntoMales,isIntoOthers,
-                                                dateOfBirth,description,education,work,profilePicture);
+                                                dateOfBirth,description,education,work,coverUrl);
 
         String[] sessionKeys = {"Wallet","User"};
         Object[] sessionValues = {((Wallet)happening.getAttribute("Wallet")).putInMap(email,user),user};

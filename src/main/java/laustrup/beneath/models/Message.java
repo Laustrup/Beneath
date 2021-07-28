@@ -8,6 +8,8 @@ public class Message {
     private String content;
     private User author;
 
+    private int repoId = -1;
+
     public Message(String content, User author) {
         this.date = LocalDateTime.now();
         this.content = content;
@@ -53,5 +55,13 @@ public class Message {
             return amountOfMinutes + " minutes ago";
         }
         return amountOfSeconds + " seconds ago";
+    }
+
+    public int getRepoId() {
+        return repoId;
+    }
+
+    public void setRepoId(int repoId) {
+        this.repoId = repoId;
     }
 }

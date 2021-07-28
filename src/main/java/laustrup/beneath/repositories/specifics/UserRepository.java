@@ -13,28 +13,49 @@ public class UserRepository extends Repository {
 
     public void putUserInDb(User user) {
 
-        int userId = findId("user_table","email", user.getEmail(), "user_id");
-
-        String education = null;
-        String work = null;
+        user.setRepoId(calcNextId("user_table"));
 
         if (user.getEducation() != null && user.getWork() != null) {
-            education = user.getEducation();
-            work = user.getWork();
-            updateTable("INSERT INTO user(username,password,email,user_description,education,work,gender,date_of_birth) " +
+            updateTable("INSERT INTO user(username,password,email,user_description,education,work,gender,date_of_birth,cover_url) " +
                     "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
-                    "\", \"" + education + "\", \"" + work + "\", \"" + user.getGender() + "\", \"" + user.getDateOfBirth() + "\");");
+                    "\", \"" + user.getEducation() + "\", \"" + user.getWork() + "\", \"" + user.getGender() + "\", \"" + user.getDateOfBirth() +
+                    "\", \"" + user.getCoverUrl() + "\");",false);
         }
         else {
-            updateTable("INSERT INTO user(username,password,email,user_description,education,work,gender,date_of_birth) " +
+            updateTable("INSERT INTO user(username,password,email,user_description,education,work,gender,date_of_birth,cover_url) " +
                     "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
-                    "\", null, null, \"" + user.getGender() + "\", \"" + user.getDateOfBirth() + "\");");
+                    "\", null, null, \"" + user.getGender() + "\", \"" + user.getDateOfBirth() +
+                    "\", \"" + user.getCoverUrl() + "\");",false);
         }
 
-        updateTable("INSERT INTO profile_picture_table(profile_picture,user_id) VALUES (" + user.getProfilePicture() + ", " + userId + ");");
         for (int i = 0; i < user.getGendersOfInterest().size();i++) {
             updateTable("INSERT INTO gender_of_interest_table(gender_of_interest, user_id) " +
-                    "VALUES (" + user.getGendersOfInterest().get(i) + ", " + userId + ");");
+                    "VALUES (" + user.getGendersOfInterest().get(i) + ", " + user.getRepoId() + ");",false);
         }
+        closeConnection();
+    }
+
+    public void deleteUser(User user) {
+        for (int i = 0; i < user.getGendersOfInterest().size();i++) {
+            updateTable("DELETE FROM gender_of_interest_table WHERE user_id = " + user.getRepoId() + ";",false);
+        }
+        for (int i = 0; i < user.getImages().length;i++) {
+            updateTable("DELETE FROM image_table WHERE user_id = " + user.getRepoId() + ";",false);
+        }
+        for (int i = 0; i < user.getMovies().size();i++) {
+            updateTable("DELETE FROM movie_table WHERE user_id = " + user.getRepoId() + ";",false);
+        }
+        for (int i = 0; i < user.getMusic().size();i++) {
+            updateTable("DELETE FROM music_table WHERE user_id = " + user.getRepoId() + ";",false);
+        }
+        for (int i = 0; i < user.getChatRooms().size();i++) {
+            for (int j = 0; j < user.getChatRooms().get(i).getAmountOfMessages();j++) {
+                updateTable("DELETE FROM message_table WHERE chat_room_id = " + user.getChatRooms().get(i).getRepoId() + ";",false);
+            }
+            updateTable("DELETE FROM chat_room_junction_table WHERE user_id = " + user.getRepoId() + ";",false);
+        }
+        updateTable("DELETE FROM user_table WHERE email = \"" + user.getEmail() + "\";",false);
+
+        closeConnection();
     }
 }
