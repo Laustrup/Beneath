@@ -17,6 +17,8 @@ public class DatabaseConnection {
     private String username;
     private String password;
 
+    private boolean isConnectionOpen = false;
+
     // Method to create connection, if it fails it returns null, otherwise returns the created connection
     public boolean openConnection() {
         try (InputStream stream = new FileInputStream("src/main/resources/application.properties")){
@@ -27,6 +29,7 @@ public class DatabaseConnection {
             password = properties.getProperty("password");
             connection = DriverManager.getConnection(dbConnection,username,password);
             new Print().writeMessage("Connection " + connection + " is opened!");
+            isConnectionOpen = true;
             return true;
         }
         catch (Exception e) {
@@ -38,12 +41,17 @@ public class DatabaseConnection {
     public boolean closeConnection() {
         try {
             connection.close();
+            isConnectionOpen = false;
             return true;
         }
         catch (java.lang.Exception e) {
             new Print().writeErr("Couldn't close connection...");
             return false;
         }
+    }
+
+    public boolean isConnectionCurrentlyOpen() {
+        return isConnectionOpen;
     }
 
     public Connection getConnection() {

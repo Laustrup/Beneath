@@ -14,9 +14,7 @@ public abstract class Repository {
     // Executes PreparedStatement and returns the ResultSet, needs a close connection.
     protected ResultSet getResultSet(String sql) {
 
-        if (database.openConnection()) {
-            connection = database.getConnection();
-        }
+        connectionStatus();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             return statement.executeQuery();
@@ -31,9 +29,7 @@ public abstract class Repository {
     // Executes an sql-statement that will update an table in db
     protected void updateTable(String sql, boolean closeConnection) {
 
-        if (database.openConnection()) {
-            connection = database.getConnection();
-        }
+        connectionStatus();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.executeUpdate();
@@ -47,8 +43,17 @@ public abstract class Repository {
         }
     }
 
+    private void connectionStatus() {
+        if (!database.isConnectionCurrentlyOpen()) {
+            if (database.openConnection()) {
+                connection = database.getConnection();
+            }
+        }
+    }
+
     public int findId(String table, String where, String value, String ColumnOfId) {
 
+        connectionStatus();
         ResultSet res = getResultSet("SELECT * FROM " + table + " WHERE " + where + " = '" + value + "';");
 
         try {
@@ -65,6 +70,8 @@ public abstract class Repository {
     }
 
     protected int calcNextId(String table) {
+
+        connectionStatus();
         ResultSet res = getResultSet("SELECT * FROM " + table + ";");
 
         int nextId = 0;
@@ -84,11 +91,13 @@ public abstract class Repository {
     }
 
     public void closeConnection() {
-        try {
-            connection.close();
-        }
-        catch (Exception e) {
-            new Print().writeErr("Couldn't close connection...");
+        if (database.isConnectionCurrentlyOpen()) {
+            try {
+                connection.close();
+            }
+            catch (Exception e) {
+                new Print().writeErr("Couldn't close connection...");
+            }
         }
     }
 

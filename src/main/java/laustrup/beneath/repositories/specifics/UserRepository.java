@@ -49,6 +49,41 @@ public class UserRepository extends Repository {
         closeConnection();
     }
 
+    public void updateUser(User current, User previous) {
+        updateTable("UPDATE user_table SET " +
+                "username = \"" + current.getName() + "\", user_password = \"" + current.getPassword() + "\", " +
+                "email = \"" + current.getEmail() + "\", user_description = \"" + current.getDescription() + "\", " +
+                "education = \"" + current.getEducation() + "\", user_work = \"" + current.getWork() + "\", " +
+                "gender = \"" + current.getGender() + "\", date_of_birth = \"" + current.getDateOfBirth() + "\", " +
+                "cover_url = \"" + current.getCoverUrl() + "\" " +
+                "WHERE user_id = " + current.getRepoId() + ";",false);
+        for (int i = 0; i < current.getGendersOfInterest().size(); i++) {
+            updateTable("UPDATE genders_of_interest_table SET " +
+                    "genders_of_interest = \"" + current.getGendersOfInterest().get(i) + "\" " +
+                    "WHERE user_id = " + current.getRepoId() + " AND genders_of_interest = \"" + previous.getGendersOfInterest().get(i) +
+                    "\";",false);
+        }
+        for (int i = 0; i < current.getMovies().size(); i++) {
+            updateTable("UPDATE movie_table SET " +
+                    "movie_title = \"" + current.getGendersOfInterest().get(i) + "\" " +
+                    "WHERE user_id = " + current.getRepoId() + " AND movie_title = \"" + previous.getMovies().get(i) +
+                    "\";",false);
+        }
+        for (int i = 0; i < current.getMusic().size(); i++) {
+            updateTable("UPDATE music_table SET " +
+                    "music_title = \"" + current.getMusic().get(i) + "\" " +
+                    "WHERE user_id = " + current.getRepoId() + " AND music_title = \"" + previous.getMusic().get(i) +
+                    "\";",false);
+        }
+        for (int i = 0; i < current.getImages().length; i++) {
+            updateTable("UPDATE image_table SET " +
+                    "image = \"" + current.getImages()[i] + "\" " +
+                    "WHERE user_id = " + current.getRepoId() + " AND image = \"" + previous.getImages()[i] +
+                    "\";",false);
+        }
+        closeConnection();
+    }
+
     public void deleteUser(User user) {
         for (int i = 0; i < user.getGendersOfInterest().size();i++) {
             updateTable("DELETE FROM gender_of_interest_table WHERE user_id = " + user.getRepoId() + ";",false);

@@ -38,13 +38,11 @@ public class Creator {
         try {
             while (res.next()) {
 
-                //TODO figure out varbinary
                 current[0] = res.getBinaryStream("image");
                 current[1] = res.getString("music_title");
                 current[2] = res.getString("movie_title");
                 current[3] = res.getString("gender_of_interest");
                 current[4] = res.getInt("chat_room_id");
-
 
                 if(!res.isFirst()) {
                     if (current[0] != previous[0]) {
@@ -125,6 +123,11 @@ public class Creator {
         new UserRepository().putUserInDb(user);
 
         return user;
+    }
+
+    public User updateUser(User current, User previous) {
+        repo.updateUser(current,previous);
+        return getUser(current.getEmail());
     }
 
     public void deleteUser(User user) {
