@@ -22,12 +22,12 @@ public class User {
     private Gender gender;
 
     private String coverUrl;
-    private BufferedImage[] images;
+    private File[] images;
 
     // Constructor for an user from db with all attributes
     public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
                 String dateOfBirth, String description, String education, String work,
-                String coverUrl,BufferedImage[] images, Liszt<String> music,Liszt<String> movies,
+                String coverUrl,File[] images, Liszt<String> music,Liszt<String> movies,
                 Liszt<ChatRoom> chatRooms) {
         this.name = name;
         this.password = password;
@@ -57,7 +57,7 @@ public class User {
         this.education = education;
         this.work = work;
         this.coverUrl = coverUrl;
-        this.images = new BufferedImage[5];
+        this.images = new File[5];
         this.music = new Liszt();
         this.movies = new Liszt();
         this.chatRooms = new Liszt();
@@ -75,7 +75,7 @@ public class User {
         this.coverUrl = coverUrl;
         this.education = new String();
         this.work = new String();
-        this.images = new BufferedImage[5];
+        this.images = new File[5];
         this.music = new Liszt();
         this.movies = new Liszt();
         this.chatRooms = new Liszt();
@@ -100,11 +100,24 @@ public class User {
         return -1;
     }
 
-    public BufferedImage[] getImages() {
+    public File[] getImages() {
         return images;
     }
 
-    public void addImage(BufferedImage newImage) {
+    public BufferedImage[] getBufferedImages() {
+        BufferedImage[] bufferedImages = new BufferedImage[images.length];
+        for (int i = 0; i < images.length; i++) {
+            try {
+                bufferedImages[i] = ImageIO.read(images[i]);
+            }
+            catch (Exception e) {
+                new Print().writeErr("Couldn't convert image file into BufferedImage...");
+            }
+        }
+        return bufferedImages;
+    }
+
+    public void addImage(File newImage) {
         for (int i = 0; i < 5; i++) {
             if (images[i] == null) {
                 images[i] = newImage;

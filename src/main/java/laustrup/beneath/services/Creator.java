@@ -7,6 +7,7 @@ import laustrup.beneath.repositories.specifics.UserRepository;
 import laustrup.beneath.utilities.Liszt;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +23,8 @@ public class Creator {
         // Attributes
         Gender gender = null;
 
-        BufferedImage[] images = null;
+        File[] images = new File[5];
+        int imagesIndex = 0;
 
         Liszt<String> music = new Liszt<>(), movies = new Liszt<>();
         Liszt<Gender> gendersOfInterest = new Liszt<>();
@@ -37,7 +39,7 @@ public class Creator {
             while (res.next()) {
 
                 //TODO figure out varbinary
-                //current[0] = res.getString("image");
+                current[0] = res.getBinaryStream("image");
                 current[1] = res.getString("music_title");
                 current[2] = res.getString("movie_title");
                 current[3] = res.getString("gender_of_interest");
@@ -45,6 +47,10 @@ public class Creator {
 
 
                 if(!res.isFirst()) {
+                    if (current[0] != previous[0]) {
+                        images[imagesIndex] = ((File) current[0]);
+                        imagesIndex++;
+                    }
                     if (current[1] != previous[1]) {
                         music.add((String) current[1]);
                     }
@@ -67,8 +73,7 @@ public class Creator {
                     }
                 }
 
-                //TODO figure out varbinary
-                //previous[0] = res.getString("image");
+                previous[0] = res.getBinaryStream("image");
                 previous[1] = res.getString("music_title");
                 previous[2] = res.getString("movie_title");
                 previous[3] = res.getString("gender_of_interest");

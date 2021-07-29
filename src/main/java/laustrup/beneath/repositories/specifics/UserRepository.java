@@ -3,6 +3,7 @@ package laustrup.beneath.repositories.specifics;
 import laustrup.beneath.models.User;
 import laustrup.beneath.repositories.Repository;
 
+import java.io.File;
 import java.sql.ResultSet;
 
 public class UserRepository extends Repository {
@@ -31,6 +32,19 @@ public class UserRepository extends Repository {
         for (int i = 0; i < user.getGendersOfInterest().size();i++) {
             updateTable("INSERT INTO gender_of_interest_table(gender_of_interest, user_id) " +
                     "VALUES (" + user.getGendersOfInterest().get(i) + ", " + user.getRepoId() + ");",false);
+        }
+        closeConnection();
+    }
+
+    public void putImageInDb(File image, int userId) {
+        updateTable("INSERT INTO image_table(image,user_id) " +
+                "VALUES (" + image + ", " + userId + ");",true);
+    }
+
+    public void putImagesInDb(File[] images, int userId) {
+        for (int i = 0; i < images.length;i++) {
+            updateTable("INSERT INTO image_table(image,user_id) " +
+                    "VALUES (" + images[i] + ", " + userId + ");",false);
         }
         closeConnection();
     }
