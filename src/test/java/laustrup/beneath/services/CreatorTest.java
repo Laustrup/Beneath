@@ -20,15 +20,33 @@ class CreatorTest {
                                String education, String work, String coverUrl) {
 
         // Arrange
-        Liszt<Gender> gendersOfInterest = new Liszt<>();
-        if (isIntoFemales) {
-            gendersOfInterest.add(Gender.female);
+        int amountsOfIntos = 0;
+
+        if (isIntoFemales&&isIntoMales&&isIntoOthers) {
+            amountsOfIntos = 3;
         }
-        if (isIntoMales) {
-            gendersOfInterest.add(Gender.male);
+        else if (isIntoFemales&&isIntoMales||isIntoFemales&&isIntoOthers||isIntoMales&&isIntoOthers) {
+            amountsOfIntos = 2;
         }
-        if (isIntoOthers) {
-            gendersOfInterest.add(Gender.other);
+        else if (isIntoFemales||isIntoMales||isIntoOthers) {
+            amountsOfIntos = 1;
+        }
+
+        Gender[] gendersOfInterest = new Gender[3];
+
+        if (amountsOfIntos!=0) {
+            int index = 0;
+            if (isIntoFemales) {
+                gendersOfInterest[index] = Gender.female;
+                index++;
+            }
+            if (isIntoMales) {
+                gendersOfInterest[index] = Gender.male;
+                index++;
+            }
+            if (isIntoOthers) {
+                gendersOfInterest[index] = Gender.other;
+            }
         }
 
         // Act
@@ -47,8 +65,11 @@ class CreatorTest {
         assertEquals(expected.getGender(),actual.getGender());
         assertEquals(expected.getCoverUrl(),actual.getCoverUrl());
 
-        for (int i = 0; i < gendersOfInterest.size();i++) {
-            assertEquals(expected.getGendersOfInterest().get(i+1),actual.getGendersOfInterest().get(i+1));
+        for (int i = 0; i < amountsOfIntos;i++) {
+            assertEquals(expected.getPreferences().getGenders()[i],actual.getPreferences().getGenders()[i]);
+        }
+        for (int i = 0; i < actual.getPreferences().getAges().length;i++) {
+            assertEquals(expected.getPreferences().getAges()[i],actual.getPreferences().getAges()[i]);
         }
 
         // Delete
