@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class StartController {
+public class Weather {
 
     private Wallet wallet = new Wallet();
 
@@ -26,11 +26,14 @@ public class StartController {
 
     private boolean hasLoggedOut = false;
 
+    private String currentEndpoint;
+
     @GetMapping("/")
-    public String indexPage(HttpServletRequest request, Model initializingModel){
+    public String indexPage(Model initializingModel){
 
         if (!happening.isHappeningActive()) {
-            happening.activateSession(request);
+            currentEndpoint = "/";
+            return "redirect:/activate_session/weather";
         }
 
         mannequin.activateModel(initializingModel);
@@ -59,8 +62,8 @@ public class StartController {
 
             wallet.putInMap(email,user);
 
-            String[] sessionKeys = {"Wallet","User","Message","Exception"};
-            Object[] sessionValues = {wallet,user,"",""};
+            String[] sessionKeys = {"Wallet","User","Message","Exception","Has_logged_in"};
+            Object[] sessionValues = {wallet,user,"","","True"};
             happening.addAttributes(sessionKeys,sessionValues);
 
             return "redirect:/dashboard-" + user.getName();
@@ -92,4 +95,9 @@ public class StartController {
         return "redirect:/dashboard-" + ((User) happening.getAttribute("User")).getName();
     }
 
+    @GetMapping("/activate_session/weather")
+    public String activateSession(HttpServletRequest request) {
+        happening.activateSession(request);
+        return currentEndpoint;
+    }
 }

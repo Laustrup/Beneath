@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/head.html(head_title='Whoops!')"></head>
+
+<body>
+
+    <header>
+        <h1 class="header_title">
+            That wasn't suppose to happen...
+        </h1>
+
+        <div th:if="is_logged_in eq 'True'">
+            <form action="/log_out" method="post">
+                <button onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                        type="submit" class="button">Log out</button>
+            </form>
+        </div>
+
+        <div th:if="is_logged_in eq 'False'">
+            <section class="log_in">
+                <form action="/log_in" method="post">
+                    <label for="log_in_email">Email: </label>
+                    <input type="email" id="log_in_email" name="email" placeholder="something@mail.com" required>
+
+                    <label for="log_in_password">Password: </label>
+                    <input type="password" id="log_in_password" name="password" placeholder="*****" required>
+
+                    <button onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                            type="submit" class="button">Log in</button>
+                </form>
+            </section>
+        </div>
+    </header>
+
+    <main>
+
+    </main>
+
+    <footer th:replace="fragments/footer.html"></footer>
+    <script th:src="@{/javascripts/buttons.js}"></script>
+
+
+</body>
+</html>

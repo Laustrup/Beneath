@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class CreateController {
+public class Sculptor {
 
     private Happening happening = new Happening();
     private Mannequin mannequin = new Mannequin();
@@ -41,7 +41,11 @@ public class CreateController {
 
         String checkedLength = checkLengths(inputs);
 
-        if(!checkedLength.equals("Length is allowed")) {
+        if (!analyst.isEighteenOrAbove(dateOfBirth)) {
+            happening.setAttribute("Exception","You need to be at least 18 years old...");
+            return "/";
+        }
+        if (!checkedLength.equals("Length is allowed")) {
             happening.setAttribute("Exception",checkedLength);
             return "/";
         }

@@ -2,6 +2,8 @@ package laustrup.beneath.services;
 
 import laustrup.beneath.models.User;
 
+import java.time.LocalDate;
+
 public class Analyst {
 
     // Checks if length of input is too long for the field in db,
@@ -144,6 +146,38 @@ public class Analyst {
             return true;
         }
         return false;
+    }
+    public boolean isEighteenOrAbove(int age) {
+        if (age >= 18) {
+            return true;
+        }
+        return false;
+    }
+    public boolean isEighteenOrAbove(String date) {
+        String[] dateSplit = date.split("-");
+        int year = Integer.parseInt(dateSplit[0]);
+        int month = Integer.parseInt(dateSplit[1]);
+        int day = Integer.parseInt(dateSplit[2]);
+
+        LocalDate now = LocalDate.now();
+
+        int amountOfYears = now.getYear() - year;
+        int amountOfMonths = now.getMonthValue() - month;
+        int amountOfDays = now.getDayOfMonth() - day;
+
+        if (now.getMonthValue() < month) {
+            amountOfMonths = now.getMonthValue();
+        }
+        if (amountOfMonths > 0 && amountOfDays > 0) {
+            amountOfYears--;
+        }
+
+        if (amountOfYears >= 18) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean allowLogin(String email, String password) {

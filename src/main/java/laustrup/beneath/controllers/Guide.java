@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class AboutController {
+public class Guide {
 
     private Happening happening = new Happening();
     private Mannequin mannequin = new Mannequin();
