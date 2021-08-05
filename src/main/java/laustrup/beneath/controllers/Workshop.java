@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class Sculptor {
+public class Workshop {
 
     private Happening happening = new Happening();
     private Mannequin mannequin = new Mannequin();

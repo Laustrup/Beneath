@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class Guide {
+public class Library {
 
     private Happening happening = new Happening();
     private Mannequin mannequin = new Mannequin();
