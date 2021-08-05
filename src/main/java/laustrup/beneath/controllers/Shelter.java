@@ -67,6 +67,12 @@ public class Shelter {
     @GetMapping("/activate_session/shelter")
     public String activateSession(HttpServletRequest request) {
         happening.activateSession(request);
+
+        if (happening.hasSessionTimedOut()) {
+            happening.setAttribute("Exception","Session has timed out...");
+            return "/";
+        }
+
         return currentEndpoint;
     }
 

@@ -6,20 +6,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class Guide {
 
     private Happening happening = new Happening();
     private Mannequin mannequin = new Mannequin();
 
+    private String currentEndpoint = new String();
+
     @GetMapping("/about")
-    public String renderAbout(Model model) {
+    public String renderAbout(Model initializingModel) {
 
-        mannequin.activateModel(model);
+        if (!happening.isHappeningActive()) {
+            currentEndpoint = "/";
+            return "redirect:/activate_session/guide";
+        }
 
+        mannequin.activateModel(initializingModel);
         mannequin.setAttribute("Situation","About");
 
-        model = mannequin.getModel();
+        initializingModel = mannequin.getModel();
 
         return "index.html";
     }
@@ -27,8 +35,12 @@ public class Guide {
     @GetMapping("/faq")
     public String renderFaq(Model model) {
 
-        mannequin.activateModel(model);
+        if (!happening.isHappeningActive()) {
+            currentEndpoint = "/";
+            return "redirect:/activate_session/guide";
+        }
 
+        mannequin.activateModel(model);
         mannequin.setAttribute("Situation","Faq");
 
         model = mannequin.getModel();
@@ -39,12 +51,22 @@ public class Guide {
     @GetMapping("/privacy_policies")
     public String renderPolicies(Model model) {
 
-        mannequin.activateModel(model);
+        if (!happening.isHappeningActive()) {
+            currentEndpoint = "/";
+            return "redirect:/activate_session/guide";
+        }
 
+        mannequin.activateModel(model);
         mannequin.setAttribute("Situation","Policies");
 
         model = mannequin.getModel();
 
         return "index.html";
+    }
+
+    @GetMapping("/activate_session/guide")
+    public String activateSession(HttpServletRequest request) {
+        happening.activateSession(request);
+        return currentEndpoint;
     }
 }

@@ -11,10 +11,9 @@ public class Happening {
 
     private HttpSession session;
     private boolean isActive = false;
-    private boolean hasSessionTimedOut = false;
+    private boolean sessionTimedOut = false;
 
     private LocalTime timeSinceUse;
-    private LocalTime timeOut;
 
     // These two methods will invalidate session if no actions are made within 30 minutes
     private void wake() {
@@ -33,7 +32,7 @@ public class Happening {
 
         if (currentHour + ((currentMinute/60)/100) >= previousHour + (((previousMinute+30)/60)/100)) {
             invalidateCurrentSession();
-            hasSessionTimedOut = true;
+            sessionTimedOut = true;
         }
     }
 
@@ -41,7 +40,7 @@ public class Happening {
         wake();
         this.session = request.getSession();
         isActive = true;
-        hasSessionTimedOut = false;
+        sessionTimedOut = false;
         return session;
     }
 
@@ -88,8 +87,8 @@ public class Happening {
         session.invalidate();
     }
 
-    public boolean isHasSessionTimedOut() {
+    public boolean hasSessionTimedOut() {
         wake();
-        return hasSessionTimedOut;
+        return sessionTimedOut;
     }
 }

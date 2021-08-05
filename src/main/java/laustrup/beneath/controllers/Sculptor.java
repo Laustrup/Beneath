@@ -8,6 +8,7 @@ import laustrup.beneath.repositories.cache.Wallet;
 import laustrup.beneath.services.Gatekeeper;
 import laustrup.beneath.services.Analyst;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +21,8 @@ public class Sculptor {
     private Mannequin mannequin = new Mannequin();
 
     private Analyst analyst = new Analyst();
+
+    private String currentEndpoint = new String();
 
     @PostMapping("/create_new_user")
     public String createNewUser(@RequestParam(name = "name") String name,
@@ -37,7 +40,10 @@ public class Sculptor {
                                 HttpServletRequest request) {
 
         String[] inputs = {name,password,email,description,education,work};
-        happening.activateSession(request);
+        if (!happening.isHappeningActive()) {
+            currentEndpoint = "/";
+            return "redirect:/activate_session/sculptor";
+        }
 
         String checkedLength = checkLengths(inputs);
 
@@ -75,5 +81,11 @@ public class Sculptor {
             }
         }
         return "Length is allowed";
+    }
+
+    @GetMapping("/activate_session/sculptor")
+    public String activateSession(HttpServletRequest request) {
+        happening.activateSession(request);
+        return currentEndpoint;
     }
 }
