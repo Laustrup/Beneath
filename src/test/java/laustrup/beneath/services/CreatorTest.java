@@ -53,6 +53,7 @@ class CreatorTest {
         User expected = creator.createUser(name,password,email,gender,
                         isIntoFemales,isIntoMales,isIntoOthers,dateOfBirth,
                         description, education,work,coverUrl);
+        new Print().writeMessage("User has been added to db!");
         User actual = creator.getUser(email);
 
         // Assert

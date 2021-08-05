@@ -70,8 +70,8 @@ public class User {
 
         String[] dateSplit = dateOfBirth.split("-");
         int year = Integer.parseInt(dateSplit[0]);
-        int month = Integer.parseInt(dateSplit[2]);
-        int day = Integer.parseInt(dateSplit[1]);
+        int month = Integer.parseInt(dateSplit[1]);
+        int day = Integer.parseInt(dateSplit[2]);
 
         LocalDate now = LocalDate.now();
 
@@ -79,10 +79,14 @@ public class User {
         int amountOfMonths = now.getMonthValue() - month;
         int amountOfDays = now.getDayOfMonth() - day;
 
-        if (amountOfMonths > 0 && amountOfDays > 0) {
-            return amountOfYears;
+        if (now.getMonthValue() < month) {
+            amountOfMonths = now.getMonthValue();
         }
-        return -1;
+
+        if (amountOfMonths > 0 && amountOfDays > 0) {
+            amountOfYears--;
+        }
+        return amountOfYears;
     }
 
     public File[] getImages() {
