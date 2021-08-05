@@ -5,5 +5,95 @@
 
 <body>
 
+    <header>
+        <h1 class="header_title">
+            Welcome <p th:text="User.getName()"></p>
+        </h1>
+
+        <form action="/log_out" method="post">
+            <button onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                    type="submit" class="button">Log out</button>
+        </form>
+    </header>
+
+    <main>
+        <section class="view_section">
+
+            <!-- Here the other profiles will be shown in order of the settings -->
+            <div th:if="${Situation eq 'view_of_profiles'}">
+
+                <div>
+                    <form action="/change_preference_filter" method="post">
+                        <label for="preference_filter">Preference filter</label>
+                        <select id="preference_filter" name="preference_filter">
+                            <option value="../static/images/covers/beautiful.jpg">
+                                <img src="../static/images/covers/beautiful.jpg" alt="beautiful" />
+                            </option>
+                            <option value="../static/images/covers/sleepy.jpg">
+                                <img src="../static/images/covers/sleepy.jpg" alt="sleepy" />
+                            </option>
+                            <option value="../static/images/covers/sporty.jpg">
+                                <img src="../static/images/covers/sporty.jpg" alt="sporty" />
+                            </option>
+                        </select>
+
+                        <button onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                                type="submit" class="button">Change preference filter</button>
+                    </form>
+                </div>
+
+                <ul th:each="profile : ${Profiles}">
+
+                    <img th:src="profile.getCover()" class="cover">
+                    <h4 th:text="profile.getName()" class="name"></h4>
+                    <p th:text="profile.getWork()" class="work"></p>
+                    <p th:text="profile.getEducation()" class="education"></p>
+                    <p th:text="profile.getDescription()" class="description"></p>
+
+                    <a onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                       class="button">View more</a>
+                </ul>
+
+            </div>
+
+            <!-- preferences of profiles shown -->
+            <div th:if="${Situation eq 'preferences'}">
+                <form action="/change_preferences">
+
+                    <label for="age">Age</label>
+                    <input type="range" id="age" name="age">
+
+                    <label for=""
+
+                    <button onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                            type="submit" class="button">Change preference filter</button>
+                </form>
+            </div>
+
+            <div th:if="${Situation eq 'profile_overview'}">
+
+            </div>
+
+        </section>
+
+        <section class="map_section">
+            <div id="view_of_profiles_diretion">
+
+            </div>
+
+            <div id="preferences_diretion">
+
+            </div>
+
+            <div id="profile_overview_diretion">
+
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="fragments/footer.html"></footer>
+    <script th:src="@{/javascripts/buttons.js}"></script>
+
 </body>
+
 </html>

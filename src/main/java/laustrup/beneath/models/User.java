@@ -16,7 +16,6 @@ public class User {
     private int repoId = -1;
 
     private Liszt<String> music, movies;
-    private Liszt<Gender> gendersOfInterest;
     private Liszt<ChatRoom> chatRooms;
 
     private Gender gender;
@@ -24,16 +23,17 @@ public class User {
     private String coverUrl;
     private File[] images;
 
+    private Preferences preferences;
+
     // Constructor for an user from db with all attributes
-    public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
+    public User(String name, String password, String email, Gender gender,
                 String dateOfBirth, String description, String education, String work,
                 String coverUrl,File[] images, Liszt<String> music,Liszt<String> movies,
-                Liszt<ChatRoom> chatRooms) {
+                Liszt<ChatRoom> chatRooms, Preferences preferences) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.gender = gender;
-        this.gendersOfInterest = gendersOfInterest;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
         this.education = education;
@@ -43,15 +43,17 @@ public class User {
         this.music = music;
         this.movies = movies;
         this.chatRooms = chatRooms;
+        this.preferences = preferences;
     }
 
-    public User(String name, String password, String email, Gender gender, Liszt gendersOfInterest,
+    // For creating a new User
+    public User(String name, String password, String email, Gender gender, Gender[] gendersOfInterest,
                 String dateOfBirth, String description, String education, String work, String coverUrl) {
+
         this.name = name;
         this.password = password;
         this.email = email;
         this.gender = gender;
-        this.gendersOfInterest = gendersOfInterest;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
         this.education = education;
@@ -61,24 +63,7 @@ public class User {
         this.music = new Liszt();
         this.movies = new Liszt();
         this.chatRooms = new Liszt();
-    }
-
-    public User(String name, String password, String email, Gender gender, Liszt<Gender> gendersOfInterest,
-                String dateOfBirth, String description, String coverUrl) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.gender = gender;
-        this.gendersOfInterest = gendersOfInterest;
-        this.dateOfBirth = dateOfBirth;
-        this.description = description;
-        this.coverUrl = coverUrl;
-        this.education = new String();
-        this.work = new String();
-        this.images = new File[5];
-        this.music = new Liszt();
-        this.movies = new Liszt();
-        this.chatRooms = new Liszt();
+        this.preferences = new Preferences(getAge(), gendersOfInterest);
     }
 
     public int getAge() {
@@ -157,18 +142,6 @@ public class User {
 
     public void removeMovie(String movie) {
         movies.remove(movie);
-    }
-
-    public Liszt<Gender> getGendersOfInterest() {
-        return gendersOfInterest;
-    }
-
-    public void addGenderOfInterest(Gender gender) {
-        gendersOfInterest.add(gender);
-    }
-
-    public void removeGenderOfInterest(Gender gender) {
-        gendersOfInterest.remove(gender);
     }
 
     public String getName() {
@@ -263,5 +236,13 @@ public class User {
 
     public int getRepoId() {
         return repoId;
+    }
+
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Preferences preferences) {
+        this.preferences = preferences;
     }
 }

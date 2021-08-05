@@ -1,6 +1,7 @@
 package laustrup.beneath.services;
 
 import laustrup.beneath.models.ChatRoom;
+import laustrup.beneath.models.Preferences;
 import laustrup.beneath.models.User;
 import laustrup.beneath.models.enums.Gender;
 import laustrup.beneath.repositories.specifics.UserRepository;
@@ -24,10 +25,12 @@ public class Creator {
         Gender gender = null;
 
         File[] images = new File[5];
+        Gender[] gendersOfInterest = new Gender[3];
+        int gendersOfInterestIndex = 0;
         int imagesIndex = 0;
 
+
         Liszt<String> music = new Liszt<>(), movies = new Liszt<>();
-        Liszt<Gender> gendersOfInterest = new Liszt<>();
         Liszt<ChatRoom> chatRooms = new Liszt<>();
 
         ResultSet res = repo.getUserResultSet(email);
@@ -36,12 +39,19 @@ public class Creator {
         Object[] current = new Object[5];
 
         try {
+            int preferenceAgeValue = res.getInt("youngest_age");
+            int[] preferenceAges = new int[res.getInt("oldest_age")-res.getInt("youngest_age")];
+
+            for (int i = 0; i < preferenceAges.length;i++) {
+                preferenceAges[i] = preferenceAgeValue;
+                preferenceAgeValue++;
+            }
             while (res.next()) {
 
                 current[0] = res.getBinaryStream("image");
                 current[1] = res.getString("music_title");
                 current[2] = res.getString("movie_title");
-                current[3] = res.getString("gender_of_interest");
+                current[3] = res.getString("user_gender_junction_table.gender_id");
                 current[4] = res.getInt("chat_room_id");
 
                 if(!res.isFirst()) {
@@ -59,12 +69,12 @@ public class Creator {
                         Gender currentGender = null;
 
                         switch ((String) current[3]) {
-                            case "female": currentGender = Gender.female;
-                            case "male": currentGender = Gender.male;
-                            case "other": currentGender = Gender.other;
+                            case "female": currentGender = Gender.female; break;
+                            case "male": currentGender = Gender.male; break;
+                            case "other": currentGender = Gender.other; break;
                         }
 
-                        gendersOfInterest.add(currentGender);
+                        gendersOfInterest[gendersOfInterestIndex] = currentGender;
                     }
                     if (current[4] != previous[4]) {
                         chatRooms.add((ChatRoom) current[4]);
@@ -74,20 +84,21 @@ public class Creator {
                 previous[0] = res.getBinaryStream("image");
                 previous[1] = res.getString("music_title");
                 previous[2] = res.getString("movie_title");
-                previous[3] = res.getString("gender_of_interest");
+                previous[3] = res.getString("user_gender_junction_table.gender_id");
                 previous[4] = res.getInt("chat_room_id");
 
                 if(res.isLast()) {
                     switch (res.getString("gender")) {
-                        case "female": gender = Gender.female;
-                        case "male": gender = Gender.male;
-                        case "other": gender = Gender.other;
+                        case "female": gender = Gender.female; break;
+                        case "male": gender = Gender.male; break;
+                        case "other": gender = Gender.other; break;
                     }
 
                     user = new User(res.getString("username"),res.getString("user_password"),
-                                    res.getString("email"),gender, gendersOfInterest,res.getString("date_of_birth"),
+                                    res.getString("email"),gender,res.getString("date_of_birth"),
                                     res.getString("user_description"), res.getString("education"),
-                                    res.getString("user_work"),res.getString("cover_url"),images,music,movies,chatRooms);
+                                    res.getString("user_work"),res.getString("cover_url"),
+                                    images,music,movies,chatRooms,new Preferences(preferenceAges,gendersOfInterest));
                     user.setRepoId(res.getInt("user_id"));
                 }
             }
@@ -105,16 +116,33 @@ public class Creator {
                            boolean isIntoMales, boolean isIntoOthers, String dateOfBirth, String description,
                            String education, String work, String coverUrl) {
 
-        Liszt<Gender> gendersOfInterest = new Liszt<>();
+        int amountsOfIntos = 0;
 
-        if (isIntoFemales) {
-            gendersOfInterest.add(Gender.female);
+        if (isIntoFemales&&isIntoMales&&isIntoOthers) {
+            amountsOfIntos = 3;
         }
-        if (isIntoMales) {
-            gendersOfInterest.add(Gender.male);
+        else if (isIntoFemales&&isIntoMales||isIntoFemales&&isIntoOthers||isIntoMales&&isIntoOthers) {
+            amountsOfIntos = 2;
         }
-        if (isIntoOthers) {
-            gendersOfInterest.add(Gender.other);
+        else if (isIntoFemales||isIntoMales||isIntoOthers) {
+            amountsOfIntos = 1;
+        }
+
+        Gender[] gendersOfInterest = new Gender[amountsOfIntos];
+
+        if (amountsOfIntos!=0) {
+            int index = 0;
+            if (isIntoFemales) {
+                gendersOfInterest[index] = Gender.female;
+                index++;
+            }
+            if (isIntoMales) {
+                gendersOfInterest[index] = Gender.male;
+                index++;
+            }
+            if (isIntoOthers) {
+                gendersOfInterest[index] = Gender.other;
+            }
         }
 
         User user = new User(name,password,email,gender,gendersOfInterest,

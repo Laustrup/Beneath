@@ -1,6 +1,8 @@
 package laustrup.beneath.repositories.specifics;
 
+import laustrup.beneath.models.Preferences;
 import laustrup.beneath.models.User;
+import laustrup.beneath.models.enums.Gender;
 import laustrup.beneath.repositories.Repository;
 
 import java.io.File;
@@ -9,30 +11,75 @@ import java.sql.ResultSet;
 public class UserRepository extends Repository {
 
     public ResultSet getUserResultSet(String email) {
-        return getResultSet("SELECT * From user_table WHERE email = \"" + email + "\";");
+        return getResultSet("SELECT * From user_table " +
+                                "INNER JOIN preference_table ON preference_table.user_id = user_table.user_id " +
+                                "INNER JOIN gender_table ON gender_table.user_id = user_table.user_id " +
+                                "INNER JOIN user_gender_junction_table ON user_gender_junction_table.user_id = user_table.user_id " +
+                                "INNER JOIN preference_gender_junction_table ON preference_gender_junction_table.preference_id = preference_table.preference_id " +
+                                "INNER JOIN movie_table ON movie_table.user_id = user_table.user_id " +
+                                "INNER JOIN music_table ON music_table.user_id = user_table.user_id " +
+                                "INNER JOIN image_table ON image_table.user_id = user_table.user_id " +
+                                "INNER JOIN chat_room_table ON chat_room_table.user_id = user_table.user_id " +
+                                "INNER JOIN user_chat_room_junction_table ON user_chat_room_junction_table.user_id = user_table.user_id " +
+                                "INNER JOIN message_table ON message_table.user_id = user_table.user_id " +
+                                "WHERE email = \"" + email + "\";");
     }
 
     public void putUserInDb(User user) {
 
         user.setRepoId(calcNextId("user_table"));
 
+        // Inserts into the user_table depending on what is null
         if (user.getEducation() != null && user.getWork() != null) {
-            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,gender,date_of_birth,cover_url) " +
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,date_of_birth,cover_url) " +
                     "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
-                    "\", \"" + user.getEducation() + "\", \"" + user.getWork() + "\", \"" + user.getGender() + "\", \"" + user.getDateOfBirth() +
+                    "\", \"" + user.getEducation() + "\", \"" + user.getWork() + "\", \"" + user.getDateOfBirth() +
                     "\", \"" + user.getCoverUrl() + "\");",false);
+        }
+        else if (user.getEducation() != null) {
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,date_of_birth,cover_url) " +
+                    "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
+                    "\", null, \"" + user.getWork() + "\", \"" + user.getDateOfBirth() + "\", \"" + user.getCoverUrl() + "\");",false);
+        }
+        else if (user.getWork() != null) {
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,date_of_birth,cover_url) " +
+                    "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
+                    "\", \"" + user.getEducation() + "\", null, \"" + user.getDateOfBirth() + "\", \"" + user.getCoverUrl() + "\");",false);
         }
         else {
-            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,gender,date_of_birth,cover_url) " +
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,date_of_birth,cover_url) " +
                     "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
-                    "\", null, null, \"" + user.getGender() + "\", \"" + user.getDateOfBirth() +
-                    "\", \"" + user.getCoverUrl() + "\");",false);
+                    "\", null, null, \"" + user.getDateOfBirth() + "\", \"" + user.getCoverUrl() + "\");",false);
         }
 
-        for (int i = 0; i < user.getGendersOfInterest().size();i++) {
-            updateTable("INSERT INTO gender_of_interest_table(gender_of_interest, user_id) " +
-                    "VALUES (" + user.getGendersOfInterest().get(i) + ", " + user.getRepoId() + ");",false);
+        // Puts in the gender of the user
+        int genderId = 0;
+        switch (String.valueOf(user.getGender())) {
+            case "female": genderId = 1; break;
+            case "male": genderId = 2; break;
+            case "other": genderId = 3; break;
         }
+        updateTable("INSERT INTO user_gender_junction_table(gender_id,user_id) " +
+                    "VALUES (" + genderId + ", " + user.getRepoId() + ");",false);
+
+        // Puts in preferences
+        Preferences preferences = user.getPreferences();
+        preferences.setRepoId(calcNextId("preference_table"));
+
+        updateTable("INSERT INTO preference_table(youngest_age,oldest_age,user_id)" +
+                    "VALUES(" + preferences.getAges()[0] + ", " + preferences.getAges()[preferences.getAges().length-1] +
+                    ", " + user.getRepoId() +");",false);
+
+        for (int i = 0; i < preferences.getGenders().length;i++) {
+            switch (String.valueOf(preferences.getGenders()[i])) {
+                case "female": genderId = 1; break;
+                case "male": genderId = 2; break;
+                case "other": genderId = 3; break;
+            }
+            updateTable("INSERT INTO preference_gender_junction_table(gender_id,preference_id) " +
+                        "VALUES (" + genderId + ", " + preferences.getRepoId() + ");" ,false);
+        }
+
         closeConnection();
     }
 
@@ -54,18 +101,11 @@ public class UserRepository extends Repository {
                 "username = \"" + current.getName() + "\", user_password = \"" + current.getPassword() + "\", " +
                 "email = \"" + current.getEmail() + "\", user_description = \"" + current.getDescription() + "\", " +
                 "education = \"" + current.getEducation() + "\", user_work = \"" + current.getWork() + "\", " +
-                "gender = \"" + current.getGender() + "\", date_of_birth = \"" + current.getDateOfBirth() + "\", " +
-                "cover_url = \"" + current.getCoverUrl() + "\" " +
+                "date_of_birth = \"" + current.getDateOfBirth() + "\", " + "cover_url = \"" + current.getCoverUrl() + "\" " +
                 "WHERE user_id = " + current.getRepoId() + ";",false);
-        for (int i = 0; i < current.getGendersOfInterest().size(); i++) {
-            updateTable("UPDATE genders_of_interest_table SET " +
-                    "genders_of_interest = \"" + current.getGendersOfInterest().get(i) + "\" " +
-                    "WHERE user_id = " + current.getRepoId() + " AND genders_of_interest = \"" + previous.getGendersOfInterest().get(i) +
-                    "\";",false);
-        }
         for (int i = 0; i < current.getMovies().size(); i++) {
             updateTable("UPDATE movie_table SET " +
-                    "movie_title = \"" + current.getGendersOfInterest().get(i) + "\" " +
+                    "movie_title = \"" + current.getMovies().get(i) + "\" " +
                     "WHERE user_id = " + current.getRepoId() + " AND movie_title = \"" + previous.getMovies().get(i) +
                     "\";",false);
         }
@@ -85,24 +125,19 @@ public class UserRepository extends Repository {
     }
 
     public void deleteUser(User user) {
-        for (int i = 0; i < user.getGendersOfInterest().size();i++) {
-            updateTable("DELETE FROM gender_of_interest_table WHERE user_id = " + user.getRepoId() + ";",false);
-        }
-        for (int i = 0; i < user.getImages().length;i++) {
-            updateTable("DELETE FROM image_table WHERE user_id = " + user.getRepoId() + ";",false);
-        }
-        for (int i = 0; i < user.getMovies().size();i++) {
-            updateTable("DELETE FROM movie_table WHERE user_id = " + user.getRepoId() + ";",false);
-        }
-        for (int i = 0; i < user.getMusic().size();i++) {
-            updateTable("DELETE FROM music_table WHERE user_id = " + user.getRepoId() + ";",false);
-        }
+
+        updateTable("DELETE FROM gender_table WHERE user_id = " + user.getRepoId() + ";",false);
+        updateTable("DELETE FROM gender_table WHERE preference_id = " + user.getPreferences().getRepoId() + ";",false);
+        updateTable("DELETE FROM preference_table WHERE user_id = " + user.getRepoId() + ";",false);
+        updateTable("DELETE FROM image_table WHERE user_id = " + user.getRepoId() + ";",false);
+        updateTable("DELETE FROM movie_table WHERE user_id = " + user.getRepoId() + ";",false);
+        updateTable("DELETE FROM music_table WHERE user_id = " + user.getRepoId() + ";",false);
         for (int i = 0; i < user.getChatRooms().size();i++) {
             for (int j = 0; j < user.getChatRooms().get(i).getAmountOfMessages();j++) {
                 updateTable("DELETE FROM message_table WHERE chat_room_id = " + user.getChatRooms().get(i).getRepoId() + ";",false);
             }
-            updateTable("DELETE FROM chat_room_junction_table WHERE user_id = " + user.getRepoId() + ";",false);
         }
+        updateTable("DELETE FROM chat_room_junction_table WHERE user_id = " + user.getRepoId() + ";",false);
         updateTable("DELETE FROM user_table WHERE email = \"" + user.getEmail() + "\";",false);
 
         closeConnection();
