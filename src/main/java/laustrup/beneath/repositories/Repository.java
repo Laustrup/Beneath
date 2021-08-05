@@ -1,6 +1,6 @@
 package laustrup.beneath.repositories;
 
-import laustrup.beneath.services.Print;
+import laustrup.beneath.services.Printer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,42 +13,52 @@ public abstract class Repository {
 
     // Executes PreparedStatement and returns the ResultSet, needs a close connection.
     protected ResultSet getResultSet(String sql) {
-
-        connectionStatus();
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            return statement.executeQuery();
+        if (connectionStatus()) {
+            try {
+                PreparedStatement statement = connection.prepareStatement(sql);
+                return statement.executeQuery();
+            }
+            catch (Exception e) {
+                new Printer().writeExceptionErr("Couldn't execute update...",e);
+                database.closeConnection();
+                return null;
+            }
         }
-        catch (Exception e) {
-            System.out.println("Couldn't execute query...\n" + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return null;
     }
 
-    // Executes an sql-statement that will update an table in db
-    protected void updateTable(String sql, boolean closeConnection) {
-
-        connectionStatus();
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.executeUpdate();
+    // Executes an sql-statement that will update an table in db, return false, if can not open connection...
+    protected boolean updateTable(String sql, boolean closeConnection) {
+        if(connectionStatus()) {
+            System.out.println(database.isConnectionCurrentlyOpen());
+            try {
+                PreparedStatement statement = connection.prepareStatement(sql);
+                System.out.println("statement prepared!");
+                statement.executeUpdate();
+                System.out.println("statement executed!");
+            }
+            catch (Exception e) {
+                new Printer().writeExceptionErr("Couldn't execute update...",e);
+                database.closeConnection();
+            }
+            if (closeConnection) {
+                database.closeConnection();
+            }
+            return true;
         }
-        catch (Exception e) {
-            System.out.println("Couldn't execute update...\n" + e.getMessage());
-            e.printStackTrace();
-        }
-        if (closeConnection) {
-            database.closeConnection();
-        }
+        return false;
     }
 
-    private void connectionStatus() {
+    private boolean connectionStatus() {
         if (!database.isConnectionCurrentlyOpen()) {
             if (database.openConnection()) {
                 connection = database.getConnection();
             }
+            else {
+                return false;
+            }
         }
+        return true;
     }
 
     public int findId(String table, String where, String value, String ColumnOfId) {
@@ -90,15 +100,18 @@ public abstract class Repository {
         return nextId + 1;
     }
 
-    public void closeConnection() {
+    public boolean closeConnection() {
         if (database.isConnectionCurrentlyOpen()) {
             try {
                 connection.close();
             }
             catch (Exception e) {
-                new Print().writeErr("Couldn't close connection...");
+                new Printer().writeErr("Couldn't close connection...");
+                return false;
             }
+            return true;
         }
+        return false;
     }
 
 }

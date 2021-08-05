@@ -2,19 +2,18 @@ package laustrup.beneath.services;
 
 import laustrup.beneath.models.User;
 import laustrup.beneath.models.enums.Gender;
-import laustrup.beneath.utilities.Liszt;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreatorTest {
+class GatekeeperTest {
 
-    private Creator creator = new Creator();
+    private Gatekeeper gatekeeper = new Gatekeeper();
 
     @ParameterizedTest
     @CsvSource(value = {"Lars|qscqscqsc|lars.bonnesen@gmail.com|male|true|false|false|1968-04-31|...|Highschool|IT|" +
-                        "../../../../main/resources/static/images/profile_pictures/Man1.jpg"},delimiter = '|')
+                        "src/main/resources/static/images/covers/sleepy.jpg"},delimiter = '|')
     public void createGetAndDelete(String name, String password, String email, Gender gender, boolean isIntoFemales,
                                boolean isIntoMales, boolean isIntoOthers, String dateOfBirth, String description,
                                String education, String work, String coverUrl) {
@@ -50,11 +49,11 @@ class CreatorTest {
         }
 
         // Act
-        User expected = creator.createUser(name,password,email,gender,
+        User expected = gatekeeper.createUser(name,password,email,gender,
                         isIntoFemales,isIntoMales,isIntoOthers,dateOfBirth,
                         description, education,work,coverUrl);
-        new Print().writeMessage("User has been added to db!");
-        User actual = creator.getUser(email);
+        new Printer().writeMessage("User has been added to db!");
+        User actual = gatekeeper.getUser(email);
 
         // Assert
         assertEquals(expected.getName(),actual.getName());
@@ -74,9 +73,9 @@ class CreatorTest {
         }
 
         // Delete
-        creator.deleteUser(expected);
+        gatekeeper.deleteUser(expected);
 
-        assertEquals(null,creator.getUser(email));
+        assertEquals(null, gatekeeper.getUser(email));
 
     }
 

@@ -4,8 +4,8 @@ import laustrup.beneath.models.controller_models.Mannequin;
 import laustrup.beneath.models.controller_models.Happening;
 import laustrup.beneath.models.User;
 import laustrup.beneath.repositories.cache.Wallet;
-import laustrup.beneath.services.Exception;
-import laustrup.beneath.services.Creator;
+import laustrup.beneath.services.Analyst;
+import laustrup.beneath.services.Gatekeeper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class StartController {
 
     private Wallet wallet = new Wallet();
 
-    private Exception handler = new Exception();
+    private Analyst analyst = new Analyst();
 
     private Mannequin mannequin = new Mannequin();
     private Happening happening = new Happening();
@@ -54,8 +54,8 @@ public class StartController {
     public String logIn(@RequestParam(name="email") String email,
                         @RequestParam(name="password") String password) {
 
-        if (handler.allowLogin(email, password)) {
-            User user = new Creator().getUser(email);
+        if (analyst.allowLogin(email, password)) {
+            User user = new Gatekeeper().getUser(email);
 
             wallet.putInMap(email,user);
 

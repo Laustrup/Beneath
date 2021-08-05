@@ -2,7 +2,7 @@ package laustrup.beneath.services;
 
 import laustrup.beneath.models.User;
 
-public class Exception {
+public class Analyst {
 
     // Checks if length of input is too long for the field in db,
     // if true it returns the allowed length, otherwise "Length is allowed"
@@ -147,7 +147,7 @@ public class Exception {
     }
 
     public boolean allowLogin(String email, String password) {
-        User user = new Creator().getUser(email);
+        User user = new Gatekeeper().getUser(email);
 
         if (user.getPassword().equals(password)) {
             return true;

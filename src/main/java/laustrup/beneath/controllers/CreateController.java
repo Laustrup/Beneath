@@ -5,8 +5,8 @@ import laustrup.beneath.models.User;
 import laustrup.beneath.models.controller_models.Mannequin;
 import laustrup.beneath.models.enums.Gender;
 import laustrup.beneath.repositories.cache.Wallet;
-import laustrup.beneath.services.Creator;
-import laustrup.beneath.services.Exception;
+import laustrup.beneath.services.Gatekeeper;
+import laustrup.beneath.services.Analyst;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +19,7 @@ public class CreateController {
     private Happening happening = new Happening();
     private Mannequin mannequin = new Mannequin();
 
-    private Exception handler = new Exception();
+    private Analyst analyst = new Analyst();
 
     @PostMapping("/create_new_user")
     public String createNewUser(@RequestParam(name = "name") String name,
@@ -46,7 +46,7 @@ public class CreateController {
             return "/";
         }
 
-        User user = new Creator().createUser(name,password,email,gender,isIntoFemales,isIntoMales,isIntoOthers,
+        User user = new Gatekeeper().createUser(name,password,email,gender,isIntoFemales,isIntoMales,isIntoOthers,
                                                 dateOfBirth,description,education,work,coverUrl);
 
         String[] sessionKeys = {"Wallet","User"};
@@ -58,12 +58,12 @@ public class CreateController {
     }
 
     private String checkLengths(String[] inputs) {
-        String[] checkedLengths = {handler.isLengthAllowedInDb(inputs[0],"username"),
-                                    handler.isLengthAllowedInDb(inputs[1],"user_password"),
-                                    handler.isLengthAllowedInDb(inputs[2],"email"),
-                                    handler.isLengthAllowedInDb(inputs[3],"user_description"),
-                                    handler.isLengthAllowedInDb(inputs[4],"education"),
-                                    handler.isLengthAllowedInDb(inputs[5],"user_work")};
+        String[] checkedLengths = {analyst.isLengthAllowedInDb(inputs[0],"username"),
+                                    analyst.isLengthAllowedInDb(inputs[1],"user_password"),
+                                    analyst.isLengthAllowedInDb(inputs[2],"email"),
+                                    analyst.isLengthAllowedInDb(inputs[3],"user_description"),
+                                    analyst.isLengthAllowedInDb(inputs[4],"education"),
+                                    analyst.isLengthAllowedInDb(inputs[5],"user_work")};
 
         for (int i = 0; i < checkedLengths.length;i++) {
             if (!checkedLengths[i].equals("Length is allowed")) {

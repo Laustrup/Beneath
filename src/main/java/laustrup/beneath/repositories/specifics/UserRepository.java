@@ -31,23 +31,23 @@ public class UserRepository extends Repository {
 
         // Inserts into the user_table depending on what is null
         if (user.getEducation() != null && user.getWork() != null) {
-            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,date_of_birth,cover_url) " +
-                    "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,user_work,date_of_birth,cover_url) " +
+                    "VALUES (\"" + user.getName() + "\", \"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
                     "\", \"" + user.getEducation() + "\", \"" + user.getWork() + "\", \"" + user.getDateOfBirth() +
                     "\", \"" + user.getCoverUrl() + "\");",false);
         }
         else if (user.getEducation() != null) {
-            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,date_of_birth,cover_url) " +
-                    "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
-                    "\", null, \"" + user.getWork() + "\", \"" + user.getDateOfBirth() + "\", \"" + user.getCoverUrl() + "\");",false);
-        }
-        else if (user.getWork() != null) {
-            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,date_of_birth,cover_url) " +
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,user_work,date_of_birth,cover_url) " +
                     "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
                     "\", \"" + user.getEducation() + "\", null, \"" + user.getDateOfBirth() + "\", \"" + user.getCoverUrl() + "\");",false);
         }
+        else if (user.getWork() != null) {
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,user_work,date_of_birth,cover_url) " +
+                    "VALUES (\"" + user.getName() + "\", \"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
+                    "\", null, \"" + user.getWork() + "\", \"" + user.getDateOfBirth() + "\", \"" + user.getCoverUrl() + "\");",false);
+        }
         else {
-            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,work,date_of_birth,cover_url) " +
+            updateTable("INSERT INTO user_table(username,user_password,email,user_description,education,user_work,date_of_birth,cover_url) " +
                     "VALUES (\"" + user.getName() + "\",\"" + user.getPassword() + "\", \"" + user.getEmail() + "\", \"" + user.getDescription() +
                     "\", null, null, \"" + user.getDateOfBirth() + "\", \"" + user.getCoverUrl() + "\");",false);
         }

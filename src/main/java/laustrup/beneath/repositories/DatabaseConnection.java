@@ -1,6 +1,6 @@
 package laustrup.beneath.repositories;
 
-import laustrup.beneath.services.Print;
+import laustrup.beneath.services.Printer;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -28,12 +28,12 @@ public class DatabaseConnection {
             username = properties.getProperty("username");
             password = properties.getProperty("password");
             connection = DriverManager.getConnection(dbConnection,username,password);
-            new Print().writeMessage("Connection " + connection + " is opened!");
+            new Printer().writeMessage("Connection " + connection + " is opened!");
             isConnectionOpen = true;
             return true;
         }
         catch (Exception e) {
-            new Print().writeExceptionErr("Couldn't create connection...",e);
+            new Printer().writeExceptionErr("Couldn't create connection...",e);
             return false;
         }
     }
@@ -45,7 +45,7 @@ public class DatabaseConnection {
             return true;
         }
         catch (java.lang.Exception e) {
-            new Print().writeErr("Couldn't close connection...");
+            new Printer().writeErr("Couldn't close connection...");
             return false;
         }
     }

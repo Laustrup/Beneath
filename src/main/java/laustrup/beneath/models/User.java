@@ -1,7 +1,7 @@
 package laustrup.beneath.models;
 
 import laustrup.beneath.models.enums.Gender;
-import laustrup.beneath.services.Print;
+import laustrup.beneath.services.Printer;
 import laustrup.beneath.utilities.Liszt;
 
 import javax.imageio.ImageIO;
@@ -100,7 +100,7 @@ public class User {
                 bufferedImages[i] = ImageIO.read(images[i]);
             }
             catch (Exception e) {
-                new Print().writeErr("Couldn't convert image file into BufferedImage...");
+                new Printer().writeErr("Couldn't convert image file into BufferedImage...");
             }
         }
         return bufferedImages;
@@ -217,7 +217,7 @@ public class User {
             return ImageIO.read(new File(coverUrl));
         }
         catch (Exception e) {
-            new Print().writeErr("Couldn't read cover's url in user's model...");
+            new Printer().writeErr("Couldn't read cover's url in user's model...");
             return null;
         }
     }

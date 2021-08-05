@@ -7,13 +7,10 @@ import laustrup.beneath.models.enums.Gender;
 import laustrup.beneath.repositories.specifics.UserRepository;
 import laustrup.beneath.utilities.Liszt;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Date;
 
-public class Creator {
+public class Gatekeeper {
 
     private UserRepository repo = new UserRepository();
 
@@ -104,7 +101,7 @@ public class Creator {
             }
         }
         catch (java.lang.Exception e) {
-            new Print().writeErr("Couldn't create an model of user from DB...");
+            new Printer().writeErr("Couldn't create an model of user from DB...");
         }
 
         repo.closeConnection();
