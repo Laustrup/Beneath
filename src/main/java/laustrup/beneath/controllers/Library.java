@@ -67,6 +67,6 @@ public class Library {
     @GetMapping("/activate_session/guide")
     public String activateSession(HttpServletRequest request) {
         happening.activateSession(request);
-        return currentEndpoint;
+        return "redirect:" + currentEndpoint;
     }
 }

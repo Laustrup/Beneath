@@ -86,6 +86,6 @@ public class Workshop {
     @GetMapping("/activate_session/sculptor")
     public String activateSession(HttpServletRequest request) {
         happening.activateSession(request);
-        return currentEndpoint;
+        return "redirect:" + currentEndpoint;
     }
 }

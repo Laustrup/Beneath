@@ -73,7 +73,7 @@ public class Shelter {
             return "/";
         }
 
-        return currentEndpoint;
+        return "redirect:" + currentEndpoint;
     }
 
 }

@@ -98,6 +98,6 @@ public class Weather {
     @GetMapping("/activate_session/weather")
     public String activateSession(HttpServletRequest request) {
         happening.activateSession(request);
-        return currentEndpoint;
+        return "redirect:" + currentEndpoint;
     }
 }
