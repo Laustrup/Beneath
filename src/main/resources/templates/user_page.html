@@ -20,7 +20,7 @@
         <section class="view_section">
 
             <!-- Here the other profiles will be shown in order of the settings -->
-            <div th:if="${Situation eq 'view_of_profiles'}">
+            <section class="view_of_profiles" th:if="${Situation eq 'view_of_profiles'}">
 
                 <div>
                     <form action="/change_preference_filter" method="post">
@@ -54,39 +54,143 @@
                        class="button">View more</a>
                 </ul>
 
-            </div>
+            </section>
 
             <!-- preferences of profiles shown -->
-            <div th:if="${Situation eq 'preferences'}">
+            <section class="preferences" th:if="${Situation eq 'preferences'}">
                 <form action="/change_preferences">
 
-                    <label for="age">Age</label>
+                    <label for="age">Age: </label>
                     <input type="range" id="age" name="age">
 
-                    <label for=""
+                    <div>
+                        <p>Interested in: </p>
+                        <div>
+                            <div>
+                                <label for="interested_in_females">Females</label>
+                                <input type="checkbox" id="interested_in_females" name="into_females">
+                            </div>
+
+                            <div>
+                                <label for="interested_in_males">Males</label>
+                                <input type="checkbox" id="interested_in_males" name="into_males">
+                            </div>
+
+                            <div>
+                                <label for="interested_in_others">Others</label>
+                                <input type="checkbox" id="interested_in_others" name="into_others">
+                            </div>
+                        </div>
+                    </div>
 
                     <button onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
-                            type="submit" class="button">Change preference filter</button>
+                            type="submit" class="button">Change preferences</button>
                 </form>
-            </div>
+            </section>
 
-            <div th:if="${Situation eq 'profile_overview'}">
+            <!-- A change to view the profile of the user -->
+            <section class="profile_overview" th:if="${Situation eq 'profile_overview'}">
 
-            </div>
+                <img th:src="User.getCover()" class="cover">
+                <h4 th:text="User.getName()" class="name"></h4>
+                <p th:text="User.getWork()" class="work"></p>
+                <p th:text="User.getEducation()" class="education"></p>
+                <p th:text="User.getDescription()" class="description"></p>
+
+                <a onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                   href="/change_details" class="button">Change details</a>
+
+            </section>
+
+            <!-- If the user chooses to change details -->
+            <section class="change_user_details" >
+                <form action="update_user" method="post">
+                    <div>
+                        <label for="name">First name:</label>
+                        <input type="text" id="name" name="name" th:value="${User.getName()}">
+                    </div>
+
+                    <!-- Probably needs to make a model for User.getHiddenPassword() -->
+                    <div>
+                        <label for="sign_up_password">Password:</label>
+                        <input type="password" id="sign_up_password" name="password" th:value="${User.getHiddenPassword()}">
+                    </div>
+
+                    <div>
+                        <label for="sign_up_email">Email:</label>
+                        <input type="email" id="sign_up_email" name="email" th:value="${User.getEmail()}">
+                    </div>
+
+                    <div class="gender_drop_box">
+                        <label for="gender">Gender:</label>
+                        <select name="gender" id="gender">
+                            <option value="unchanged">Unchanged</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <p>Born:</p>
+                        <div>
+                            <input type="date" id="date_of_birth" name="date_of_birth" th:value="${User.getDateOfBirth()}">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description" th:value="${User.getDescription()}">
+                    </div>
+
+                    <div>
+                        <label for="work">Work:</label>
+                        <input type="text" id="work" name="work" th:value="${User.getWork()}">
+                    </div>
+
+                    <div>
+                        <label for="education">Education:</label>
+                        <input type="text" id="education" name="education" th:value="${User.getEducation()}">
+                    </div>
+
+                    <div>
+                        <label for="image">Change cover:</label>
+                        <select id="image" name="cover_url">
+                            <option value="unchanged">Keep old cover</option>
+                            <option value="../static/images/covers/beautiful.jpg">
+                                <img src="../static/images/covers/beautiful.jpg" alt="beautiful" />
+                            </option>
+                            <option value="../static/images/covers/sleepy.jpg">
+                                <img src="../static/images/covers/sleepy.jpg" alt="sleepy" />
+                            </option>
+                            <option value="../static/images/covers/sporty.jpg">
+                                <img src="../static/images/covers/sporty.jpg" alt="sporty" />
+                            </option>
+                        </select>
+                    </div>
+
+                    <button onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                            type="submit" class="button">Update</button>
+                </form>
+            </section>
 
         </section>
 
+        <!-- Map that direct to the different views in this shelter -->
         <section class="map_section">
-            <div id="view_of_profiles_diretion">
-
+            <div id="view_of_profiles_direction">
+                <a onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                   href="/view_profiles" class="button">View profiles</a>
             </div>
 
-            <div id="preferences_diretion">
-
+            <div id="preferences_direction">
+                <a onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                   href="/change_preferences" class="button">Preferences</a>
             </div>
 
-            <div id="profile_overview_diretion">
-
+            <div id="profile_overview_direction">
+                <a onmouseover="onMouseColour(this)" onmouseout="offMouseColour(this)"
+                   href="/view_profile" class="button">View your profile</a>
             </div>
         </section>
     </main>

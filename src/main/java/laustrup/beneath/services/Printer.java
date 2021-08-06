@@ -2,7 +2,8 @@ package laustrup.beneath.services;
 
 public class Printer {
 
-    private String errorLine = "############################################################################################################################################";
+    private String errorLine = "########################################################################################" +
+                                "####################################################";
 
     public void writeErr(String message) {
         System.err.println("\n" + errorLine + "\n\n\t" + message + "\n\n" + errorLine + "\n");

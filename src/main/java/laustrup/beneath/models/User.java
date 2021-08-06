@@ -160,6 +160,15 @@ public class User {
         return password;
     }
 
+    public String getHiddenPassword() {
+        String hiddenPassword = new String();
+
+        for (int i = 0; i < password.length();i++) {
+            hiddenPassword += "*";
+        }
+        return hiddenPassword;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
