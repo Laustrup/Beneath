@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -83,9 +84,14 @@ public class Weather {
         return "redirect:/";
     }
 
-
-    @GetMapping("/Error")
+    /*
+    @GetMapping("/error")
     public String errorRedirectIndexPage() {
+
+        if (!happening.isHappeningActive()) {
+            currentEndpoint = "/error";
+            return "redirect:/activate_session/weather";
+        }
 
         happening.setAttribute("Exception", "An error accrued...");
 
@@ -94,6 +100,8 @@ public class Weather {
         }
         return "redirect:/dashboard-" + ((User) happening.getAttribute("User")).getName();
     }
+
+     */
 
     @GetMapping("/activate_session/weather")
     public String activateSession(HttpServletRequest request) {

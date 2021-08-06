@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<!-- Html for the specific error 404 -->
+
+<head th:replace="fragments/head.html(head_title='Whoops!')"></head>
+
+<body th:replace="error.html(error_message='Page not found')"></body>
+
+<footer th:replace="fragments/footer.html"></footer>
+<script th:src="@{/javascripts/buttons.js}"></script>
+
+
+</html>

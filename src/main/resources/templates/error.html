@@ -6,9 +6,7 @@
 <body>
 
     <header>
-        <h1 class="header_title">
-            That wasn't suppose to happen...
-        </h1>
+        <h1 class="header_title"><h4 th:text="${error_message}"></h4></h1>
 
         <div th:if="is_logged_in eq 'True'">
             <form action="/log_out" method="post">
